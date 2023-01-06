@@ -20,7 +20,7 @@
             TwoFACode = twofacode;
         }
         
-        public HypernexSettings(string username, string email, string password, string inviteCode, string twofacode = "")
+        public HypernexSettings(string username, string email, string password, string inviteCode = "", string twofacode = "")
         {
             Username = username;
             Password = password;
