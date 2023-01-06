@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+        <ProjectGuid>{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}</ProjectGuid>
+        <OutputType>Library</OutputType>
+        <AppDesignerFolder>Properties</AppDesignerFolder>
+        <RootNamespace>HypernexSharp</RootNamespace>
+        <AssemblyName>HypernexSharp</AssemblyName>
+        <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+        <FileAlignment>512</FileAlignment>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugSymbols>true</DebugSymbols>
+        <DebugType>full</DebugType>
+        <Optimize>false</Optimize>
+        <OutputPath>bin\Debug\</OutputPath>
+        <DefineConstants>DEBUG;TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+        <PlatformTarget>AnyCPU</PlatformTarget>
+        <DebugType>pdbonly</DebugType>
+        <Optimize>true</Optimize>
+        <OutputPath>bin\Release\</OutputPath>
+        <DefineConstants>TRACE</DefineConstants>
+        <ErrorReport>prompt</ErrorReport>
+        <WarningLevel>4</WarningLevel>
+        <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    </PropertyGroup>
+    <ItemGroup>
+        <Reference Include="System" />
+        <Reference Include="System.Core" />
+        <Reference Include="System.Data" />
+        <Reference Include="System.Net.Http" />
+        <Reference Include="System.Xml" />
+    </ItemGroup>
+    <ItemGroup>
+        <Compile Include="APIObjects\AvatarMeta.cs" />
+        <Compile Include="APIObjects\AvatarPublicity.cs" />
+        <Compile Include="APIObjects\BanStatus.cs" />
+        <Compile Include="APIObjects\Bio.cs" />
+        <Compile Include="APIObjects\FileData.cs" />
+        <Compile Include="APIObjects\LoginResult.cs" />
+        <Compile Include="APIObjects\ManageAssetTokenAction.cs" />
+        <Compile Include="APIObjects\PronounCases.cs" />
+        <Compile Include="APIObjects\Pronouns.cs" />
+        <Compile Include="APIObjects\Rank.cs" />
+        <Compile Include="APIObjects\SetPronouns.cs" />
+        <Compile Include="APIObjects\Status.cs" />
+        <Compile Include="APIObjects\Token.cs" />
+        <Compile Include="APIObjects\UploadType.cs" />
+        <Compile Include="APIObjects\User.cs" />
+        <Compile Include="APIObjects\WarnStatus.cs" />
+        <Compile Include="APIObjects\WorldMeta.cs" />
+        <Compile Include="APIObjects\WorldPublicity.cs" />
+        <Compile Include="API\APIMessage.cs" />
+        <Compile Include="API\APIMessages\ChangeEmail.cs" />
+        <Compile Include="API\APIMessages\CreateUser.cs" />
+        <Compile Include="API\APIMessages\DoesUserExist.cs" />
+        <Compile Include="API\APIMessages\GetFile.cs" />
+        <Compile Include="API\APIMessages\GetUser.cs" />
+        <Compile Include="API\APIMessages\IsInviteCodeRequired.cs" />
+        <Compile Include="API\APIMessages\IsValidToken.cs" />
+        <Compile Include="API\APIMessages\Login.cs" />
+        <Compile Include="API\APIMessages\ManageAssetToken.cs" />
+        <Compile Include="API\APIMessages\RequestPasswordReset.cs" />
+        <Compile Include="API\APIMessages\ResetPassword.cs" />
+        <Compile Include="API\APIMessages\SimpleTargetUserId.cs" />
+        <Compile Include="API\APIMessages\SimpleUserIdToken.cs" />
+        <Compile Include="API\APIMessages\UpdateBio.cs" />
+        <Compile Include="API\APIMessages\Upload.cs" />
+        <Compile Include="API\APIMessages\Verify2FA.cs" />
+        <Compile Include="API\APIMessages\VerifyEmailToken.cs" />
+        <Compile Include="API\APIResult.cs" />
+        <Compile Include="API\APIResults\DoesUserExistResult.cs" />
+        <Compile Include="API\APIResults\EmptyResult.cs" />
+        <Compile Include="API\APIResults\GetUserResult.cs" />
+        <Compile Include="API\APIResults\InviteCodeRequiredResult.cs" />
+        <Compile Include="API\APIResults\IsValidTokenResult.cs" />
+        <Compile Include="API\APIResults\LoginResult.cs" />
+        <Compile Include="API\APIResults\ManageAssetTokenResult.cs" />
+        <Compile Include="API\APIResults\SignupResult.cs" />
+        <Compile Include="API\APIResults\UploadResult.cs" />
+        <Compile Include="API\CallbackResult.cs" />
+        <Compile Include="API\HTTPTools.cs" />
+        <Compile Include="HypernexObject.cs" />
+        <Compile Include="Libs\SimpleJSON.cs" />
+        <Compile Include="Properties\AssemblyInfo.cs" />
+        <Compile Include="HypernexSettings.cs" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+    <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+         Other similar extension points exist, see Microsoft.Common.targets.
+    <Target Name="BeforeBuild">
+    </Target>
+    <Target Name="AfterBuild">
+    </Target>
+    -->
+
+</Project>

@@ -1,0 +1,1 @@
+﻿namespace HypernexSharp.API.APIResults{public class EmptyResult{}}

@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HypernexSharp", "HypernexSharp\HypernexSharp.csproj", "{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HypernexSharp.Tests", "HypernexSharp.Tests\HypernexSharp.Tests.csproj", "{A4761F30-A1A3-4B22-B83D-1F23DA041188}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B706762-56A6-4EBF-8CB6-6C07FBC3E437}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A4761F30-A1A3-4B22-B83D-1F23DA041188}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A4761F30-A1A3-4B22-B83D-1F23DA041188}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A4761F30-A1A3-4B22-B83D-1F23DA041188}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A4761F30-A1A3-4B22-B83D-1F23DA041188}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
