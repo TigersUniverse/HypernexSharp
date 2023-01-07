@@ -45,6 +45,8 @@
         <Compile Include="APIObjects\AvatarPublicity.cs" />
         <Compile Include="APIObjects\BanStatus.cs" />
         <Compile Include="APIObjects\Bio.cs" />
+        <Compile Include="APIObjects\BuildPlatform.cs" />
+        <Compile Include="APIObjects\Builds.cs" />
         <Compile Include="APIObjects\FileData.cs" />
         <Compile Include="APIObjects\LoginResult.cs" />
         <Compile Include="APIObjects\ManageAssetTokenAction.cs" />

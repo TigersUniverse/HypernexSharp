@@ -12,6 +12,8 @@ namespace HypernexSharp.APIObjects
         public List<string> Tags { get; } = new List<string>();
         public string ThumbnailURL { get; set; }
         public List<string> IconURLs { get; } = new List<string>();
+        public BuildPlatform BuildPlatform { get; set; }
+        public List<Builds> Builds { get; } = new List<Builds>();
 
         public JSONNode GetNode()
         {
@@ -29,24 +31,30 @@ namespace HypernexSharp.APIObjects
             foreach (string iconUrL in IconURLs)
                 iconarray.Add(iconUrL);
             o.Add("IconURLs", iconarray);
+            o.Add("BuildPlatform", (int) BuildPlatform);
             return o;
         }
 
         public static WorldMeta FromJSON(JSONNode node)
         {
-            WorldMeta worldMeta = new WorldMeta
-            {
-                Id = node["Id"].Value,
-                Publicity = (WorldPublicity) node["Publicity"].AsInt,
-                Name = node["Name"].Value,
-                Description = node["Description"].Value,
-                ThumbnailURL = node["ThumbnailURL"].Value
-            };
+            WorldMeta worldMeta = new WorldMeta(node["Id"].Value, (WorldPublicity) node["Publicity"].AsInt,
+                node["Name"].Value, node["Description"].Value, node["ThumbnailURL"].Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Tags"].AsArray)
                 worldMeta.Tags.Add(keyValuePair.Value.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["IconURLs"].AsArray)
                 worldMeta.IconURLs.Add(keyValuePair.Value);
+            foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Builds"].AsArray)
+                worldMeta.Builds.Add(APIObjects.Builds.FromJSON(keyValuePair.Value));
             return worldMeta;
+        }
+        
+        public WorldMeta(string Id, WorldPublicity Publicity, string Name, string Description, string ThumbnailURL)
+        {
+            this.Id = Id;
+            this.Publicity = Publicity;
+            this.Name = Name;
+            this.Description = Description;
+            this.ThumbnailURL = ThumbnailURL;
         }
     }
 }

@@ -9,7 +9,8 @@
         public string TwoFACode { get; }
 
         public string TargetDomain { get; set; }
-        public string APIURL => "https://" + TargetDomain + "/api/v1/";
+        public string APIVersion { get; set; } = "v1";
+        public string APIURL => "https://" + TargetDomain + "/api/" + APIVersion + "/";
         
         public HypernexSettings(){}
 
