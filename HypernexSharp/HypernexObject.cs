@@ -422,6 +422,21 @@ namespace HypernexSharp
             });
         }
 
+        public void Search(Action<CallbackResult<SearchResult>> callback, SearchType searchType, string searchTerm)
+        {
+            Search search = new Search(searchType, searchTerm);
+            search.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    SearchResult searchResult = new SearchResult(result.result["Candidates"].AsArray);
+                    callback.Invoke(new CallbackResult<SearchResult>(true, result.message, searchResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<SearchResult>(false, result.message, null));
+            });
+        }
+
         public void GetFile(Action<Stream> callback, string uploaderUserId, string fileId)
         {
             GetFile getFile = new GetFile(uploaderUserId, fileId);

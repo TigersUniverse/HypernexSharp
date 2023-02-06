@@ -73,6 +73,7 @@
         <Compile Include="API\APIMessages\ManageAssetToken.cs" />
         <Compile Include="API\APIMessages\RequestPasswordReset.cs" />
         <Compile Include="API\APIMessages\ResetPassword.cs" />
+        <Compile Include="API\APIMessages\Search.cs" />
         <Compile Include="API\APIMessages\SimpleTargetUserId.cs" />
         <Compile Include="API\APIMessages\SimpleUserIdToken.cs" />
         <Compile Include="API\APIMessages\UpdateBio.cs" />
@@ -87,6 +88,7 @@
         <Compile Include="API\APIResults\IsValidTokenResult.cs" />
         <Compile Include="API\APIResults\LoginResult.cs" />
         <Compile Include="API\APIResults\ManageAssetTokenResult.cs" />
+        <Compile Include="API\APIResults\SearchResult.cs" />
         <Compile Include="API\APIResults\SignupResult.cs" />
         <Compile Include="API\APIResults\UploadResult.cs" />
         <Compile Include="API\CallbackResult.cs" />
