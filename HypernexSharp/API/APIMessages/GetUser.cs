@@ -17,7 +17,8 @@ namespace HypernexSharp.API.APIMessages
                 o.Add("username", username);
             else if(!string.IsNullOrEmpty(userid))
                 o.Add("userid", userid);
-            o.Add("tokenContent", tokenContent);
+            if(!string.IsNullOrEmpty(tokenContent))
+                o.Add("tokenContent", tokenContent);
             return o;
         }
         

@@ -7,6 +7,8 @@
         public string Email { get; }
         public string InviteCode { get; }
         public string TwoFACode { get; }
+        public string UserId { get; }
+        public string TokenContent { get; }
 
         public string TargetDomain { get; set; }
         public bool IsHTTP { get; set; } = false;
@@ -24,6 +26,12 @@
         
         public HypernexSettings(){}
 
+        public HypernexSettings(string userid, string tokenContent)
+        {
+            UserId = userid;
+            TokenContent = tokenContent;
+        }
+
         public HypernexSettings(string username, string password, string twofacode = "")
         {
             Username = username;
@@ -31,13 +39,12 @@
             TwoFACode = twofacode;
         }
         
-        public HypernexSettings(string username, string email, string password, string inviteCode = "", string twofacode = "")
+        public HypernexSettings(string username, string email, string password, string inviteCode = "")
         {
             Username = username;
             Password = password;
             Email = email;
             InviteCode = inviteCode;
-            TwoFACode = twofacode;
         }
     }
 }

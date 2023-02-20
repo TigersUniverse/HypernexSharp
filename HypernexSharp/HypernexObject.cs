@@ -68,6 +68,38 @@ namespace HypernexSharp
             });
         }
 
+        public void GetUser(Action<CallbackResult<GetUserResult>> callback)
+        {
+            GetUser getUser = new GetUser(Settings.TokenContent) {userid = Settings.UserId};
+            getUser.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    GetUserResult getUserResult = new GetUserResult
+                        {UserData = User.FromJSON(result.result["UserData"])};
+                    callback.Invoke(new CallbackResult<GetUserResult>(true, result.message, getUserResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<GetUserResult>(false, result.message, null));
+            });
+        }
+
+        public void GetUser(string username, Action<CallbackResult<GetUserResult>> callback, Token token = null)
+        {
+            GetUser getUser = new GetUser(token?.content ?? "") {username = username};
+            getUser.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    GetUserResult getUserResult = new GetUserResult
+                        {UserData = User.FromJSON(result.result["UserData"])};
+                    callback.Invoke(new CallbackResult<GetUserResult>(true, result.message, getUserResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<GetUserResult>(false, result.message, null));
+            });
+        }
+
         public void IsInviteCodeRequired(Action<CallbackResult<InviteCodeRequiredResult>> callback)
         {
             IsInviteCodeRequired isInviteCodeRequired = new IsInviteCodeRequired();
