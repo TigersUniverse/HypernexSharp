@@ -2,6 +2,7 @@
 {
     public class HypernexSettings
     {
+        internal bool isFromToken;
         public string Username { get; }
         public string Password { get; }
         public string Email { get; }
@@ -30,6 +31,7 @@
         {
             UserId = userid;
             TokenContent = tokenContent;
+            isFromToken = true;
         }
 
         public HypernexSettings(string username, string password, string twofacode = "")

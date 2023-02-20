@@ -32,24 +32,50 @@ namespace HypernexSharp
 
         public void Login(Action<CallbackResult<API.APIResults.LoginResult>> callback)
         {
-            Login login = new Login(Settings.Username, Settings.Password, Settings.TwoFACode);
-            login.SendRequest(Settings, result =>
+            if (Settings.isFromToken)
             {
-                if (result.success)
+                GetUser(new Token{content = Settings.TokenContent}, r =>
                 {
-                    API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
-                        {Result = (LoginResult) result.result["LoginResult"].AsInt};
-                    if (result.result.HasKey("WarnStatus"))
-                        loginResult.WarnStatus = WarnStatus.FromJSON(result.result["WarnStatus"]);
-                    if (result.result.HasKey("BanStatus"))
-                        loginResult.BanStatus = BanStatus.FromJSON(result.result["BanStatus"]);
-                    if (result.result.HasKey("token"))
-                        loginResult.Token = Token.FromJSON(result.result["token"]);
-                    callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(true, result.message, loginResult));
-                }
-                else
-                    callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false, result.message, null));
-            });
+                    if (r.success)
+                    {
+                        API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
+                        {
+                            BanStatus = r.result.UserData.BanStatus,
+                            WarnStatus = r.result.UserData.WarnStatus,
+                            Result = LoginResult.Correct
+                        };
+                        foreach (Token token in r.result.UserData.AccountTokens)
+                        {
+                            if (token.content.Equals(Settings.TokenContent))
+                                loginResult.Token = token;
+                        }
+                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(true, r.message, loginResult));
+                    }
+                    else
+                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false, r.message, null));
+                });
+            }
+            else
+            {
+                Login login = new Login(Settings.Username, Settings.Password, Settings.TwoFACode);
+                login.SendRequest(Settings, result =>
+                {
+                    if (result.success)
+                    {
+                        API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
+                            {Result = (LoginResult) result.result["LoginResult"].AsInt};
+                        if (result.result.HasKey("WarnStatus"))
+                            loginResult.WarnStatus = WarnStatus.FromJSON(result.result["WarnStatus"]);
+                        if (result.result.HasKey("BanStatus"))
+                            loginResult.BanStatus = BanStatus.FromJSON(result.result["BanStatus"]);
+                        if (result.result.HasKey("token"))
+                            loginResult.Token = Token.FromJSON(result.result["token"]);
+                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(true, result.message, loginResult));
+                    }
+                    else
+                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false, result.message, null));
+                });
+            }
         }
 
         public void GetUser(Token token, Action<CallbackResult<GetUserResult>> callback)
@@ -68,23 +94,7 @@ namespace HypernexSharp
             });
         }
 
-        public void GetUser(Action<CallbackResult<GetUserResult>> callback)
-        {
-            GetUser getUser = new GetUser(Settings.TokenContent) {userid = Settings.UserId};
-            getUser.SendRequest(Settings, result =>
-            {
-                if (result.success)
-                {
-                    GetUserResult getUserResult = new GetUserResult
-                        {UserData = User.FromJSON(result.result["UserData"])};
-                    callback.Invoke(new CallbackResult<GetUserResult>(true, result.message, getUserResult));
-                }
-                else
-                    callback.Invoke(new CallbackResult<GetUserResult>(false, result.message, null));
-            });
-        }
-
-        public void GetUser(string username, Action<CallbackResult<GetUserResult>> callback, Token token = null)
+        public void GetUser(Action<CallbackResult<GetUserResult>> callback, string username, Token token = null)
         {
             GetUser getUser = new GetUser(token?.content ?? "") {username = username};
             getUser.SendRequest(Settings, result =>
@@ -132,9 +142,12 @@ namespace HypernexSharp
             });
         }
 
-        public void Logout(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token deAuthToken)
+        public void Logout(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token deAuthToken) =>
+            Logout(callback, CurrentUser.Id, deAuthToken);
+        
+        public void Logout(Action<CallbackResult<EmptyResult>> callback, string userId, Token deAuthToken)
         {
-            SimpleUserIdToken logout = new SimpleUserIdToken("logout", CurrentUser.Id, deAuthToken.content);
+            SimpleUserIdToken logout = new SimpleUserIdToken("logout", userId, deAuthToken.content);
             logout.SendRequest(Settings, result =>
             {
                 if (result.success)
