@@ -34,26 +34,45 @@ namespace HypernexSharp
         {
             if (Settings.isFromToken)
             {
-                GetUser(new Token{content = Settings.TokenContent}, r =>
+                ValidateToken(validTokenResult =>
                 {
-                    if (r.success)
+                    if (validTokenResult.success && validTokenResult.result.isValidToken)
                     {
-                        API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
+                        GetUser(new Token{content = Settings.TokenContent}, r =>
                         {
-                            BanStatus = r.result.UserData.BanStatus,
-                            WarnStatus = r.result.UserData.WarnStatus,
-                            Result = LoginResult.Correct
-                        };
-                        foreach (Token token in r.result.UserData.AccountTokens)
-                        {
-                            if (token.content.Equals(Settings.TokenContent))
-                                loginResult.Token = token;
-                        }
-                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(true, r.message, loginResult));
+                            if (r.success)
+                            {
+                                API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
+                                {
+                                    BanStatus = r.result.UserData.BanStatus,
+                                    WarnStatus = r.result.UserData.WarnStatus,
+                                    Result = LoginResult.Correct
+                                };
+                                foreach (Token token in r.result.UserData.AccountTokens)
+                                {
+                                    if (token.content.Equals(Settings.TokenContent))
+                                        loginResult.Token = token;
+                                }
+                                callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(true, r.message, loginResult));
+                            }
+                            else
+                                callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false, r.message, null));
+                        });
                     }
                     else
-                        callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false, r.message, null));
-                });
+                    {
+                        if (!string.IsNullOrEmpty(validTokenResult.message))
+                        {
+                            API.APIResults.LoginResult loginResult = new API.APIResults.LoginResult
+                                {Result = LoginResult.Incorrect};
+                            callback.Invoke(new CallbackResult<API.APIResults.LoginResult>(false,
+                                validTokenResult.message, loginResult));
+                        }
+                        else
+                            callback.Invoke(
+                                new CallbackResult<API.APIResults.LoginResult>(false, validTokenResult.message, null));
+                    }
+                }, Settings.UserId, Settings.TokenContent);
             }
             else
             {
@@ -80,7 +99,11 @@ namespace HypernexSharp
 
         public void GetUser(Token token, Action<CallbackResult<GetUserResult>> callback)
         {
-            GetUser getUser = new GetUser(token.content){username = Settings.Username};
+            GetUser getUser;
+            if(Settings.isFromToken)
+                getUser = new GetUser(token.content){userid = Settings.UserId};
+            else
+                getUser = new GetUser(token.content){username = Settings.Username};
             getUser.SendRequest(Settings, result =>
             {
                 if (result.success)
@@ -169,7 +192,23 @@ namespace HypernexSharp
                 if (result.success)
                 {
                     IsValidTokenResult isValidTokenResult = new IsValidTokenResult
-                        {isValidToken = result.result["isTokenValid"].AsBool};
+                        {isValidToken = result.result["isValidToken"].AsBool};
+                    callback.Invoke(new CallbackResult<IsValidTokenResult>(true, result.message, isValidTokenResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<IsValidTokenResult>(false, result.message, null));
+            });
+        }
+        
+        public void ValidateToken(Action<CallbackResult<IsValidTokenResult>> callback, string userId, string tokenContent)
+        {
+            IsValidToken isValidToken = new IsValidToken(tokenContent){userid = userId};
+            isValidToken.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    IsValidTokenResult isValidTokenResult = new IsValidTokenResult
+                        {isValidToken = result.result["isValidToken"].AsBool};
                     callback.Invoke(new CallbackResult<IsValidTokenResult>(true, result.message, isValidTokenResult));
                 }
                 else

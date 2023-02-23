@@ -4,7 +4,7 @@ namespace HypernexSharp.API.APIMessages
 {
     public class Login : APIMessage
     {
-        private string userid { get; }
+        private string username { get; }
         private string password { get; }
         private string twofacode { get; }
 
@@ -13,16 +13,16 @@ namespace HypernexSharp.API.APIMessages
         protected override JSONNode GetNode()
         {
             JSONObject o = new JSONObject();
-            o.Add("userid", userid);
+            o.Add("username", username);
             o.Add("password", password);
             if(!string.IsNullOrEmpty(twofacode))
                 o.Add("twofacode", twofacode);
             return o;
         }
 
-        public Login(string userid, string password, string twofacode = "")
+        public Login(string username, string password, string twofacode = "")
         {
-            this.userid = userid;
+            this.username = username;
             this.password = password;
             this.twofacode = twofacode;
         }

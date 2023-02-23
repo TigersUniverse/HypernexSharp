@@ -26,7 +26,6 @@ namespace HypernexSharp.Tests
             if (is2FA)
                 twofa = Console.ReadLine() ?? String.Empty;
             HypernexSettings settings = new HypernexSettings(username, password, twofa){TargetDomain = DOMAIN};
-            new HypernexSettings("h", email:"e", "e");
             HypernexObject = new HypernexObject(settings);
             HypernexObject.Login(r =>
             {
