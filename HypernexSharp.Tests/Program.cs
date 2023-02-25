@@ -6,12 +6,18 @@ namespace HypernexSharp.Tests
 {
     internal class Program
     {
-        private const string DOMAIN = "hypernex.fortnite.lol";
+        private const string DOMAIN = "localhost";
         private static HypernexObject HypernexObject;
         private static User CurrentUser;
+        private static Token CurrentToken;
         
         public static void Main(string[] args)
         {
+            AppDomain.CurrentDomain.ProcessExit += (sender, eventArgs) =>
+            {
+                if(CurrentUser != null)
+                    HypernexObject?.Logout(result => { Console.WriteLine("Logged Out!"); }, CurrentUser, CurrentToken);
+            };
             AttemptLogin();
             Console.ReadKey(true);
         }
@@ -25,13 +31,14 @@ namespace HypernexSharp.Tests
             string twofa = String.Empty;
             if (is2FA)
                 twofa = Console.ReadLine() ?? String.Empty;
-            HypernexSettings settings = new HypernexSettings(username, password, twofa){TargetDomain = DOMAIN};
+            HypernexSettings settings = new HypernexSettings(username, password, twofa){TargetDomain = DOMAIN, IsHTTP = true};
             HypernexObject = new HypernexObject(settings);
             HypernexObject.Login(r =>
             {
                 if (r.success && r.result.Result == LoginResult.Correct)
                 {
                     Console.WriteLine("Logged In! Getting Login User...");
+                    CurrentToken = r.result.Token;
                     HypernexObject.GetUser(r.result.Token, userR =>
                     {
                         if (userR.success)

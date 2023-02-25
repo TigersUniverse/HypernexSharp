@@ -117,9 +117,14 @@ namespace HypernexSharp
             });
         }
 
-        public void GetUser(Action<CallbackResult<GetUserResult>> callback, string username, Token token = null)
+        public void GetUser(Action<CallbackResult<GetUserResult>> callback, string user, Token token = null,
+            bool isUserId = false)
         {
-            GetUser getUser = new GetUser(token?.content ?? "") {username = username};
+            GetUser getUser = new GetUser(token?.content ?? "");
+            if (isUserId)
+                getUser.userid = user;
+            else
+                getUser.username = user;
             getUser.SendRequest(Settings, result =>
             {
                 if (result.success)

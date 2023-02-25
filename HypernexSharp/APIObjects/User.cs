@@ -71,19 +71,19 @@ namespace HypernexSharp.APIObjects
             {
                 user.OutgoingFriendRequests = new List<string>();
                 foreach (KeyValuePair<string,JSONNode> keyValuePair in node["OutgoingFriendRequests"].AsArray)
-                    user.Followers.Add(keyValuePair.Value.Value);
+                    user.OutgoingFriendRequests.Add(keyValuePair.Value.Value);
             }
             if (node.HasKey("FriendRequests"))
             {
                 user.FriendRequests = new List<string>();
                 foreach (KeyValuePair<string,JSONNode> keyValuePair in node["FriendRequests"].AsArray)
-                    user.Followers.Add(keyValuePair.Value.Value);
+                    user.FriendRequests.Add(keyValuePair.Value.Value);
             }
             if (node.HasKey("Friends"))
             {
                 user.Friends = new List<string>();
                 foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Friends"].AsArray)
-                    user.Followers.Add(keyValuePair.Value.Value);
+                    user.Friends.Add(keyValuePair.Value.Value);
             }
             if (node.HasKey("AccountCreationDate"))
                 user.AccountCreationDate = node["AccountCreationDate"].AsInt;
