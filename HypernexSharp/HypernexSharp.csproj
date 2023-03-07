@@ -66,11 +66,13 @@
         <Compile Include="API\APIMessages\CreateUser.cs" />
         <Compile Include="API\APIMessages\DoesUserExist.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
+        <Compile Include="API\APIMessages\GetMeta.cs" />
         <Compile Include="API\APIMessages\GetUser.cs" />
         <Compile Include="API\APIMessages\IsInviteCodeRequired.cs" />
         <Compile Include="API\APIMessages\IsValidToken.cs" />
         <Compile Include="API\APIMessages\Login.cs" />
         <Compile Include="API\APIMessages\ManageAssetToken.cs" />
+        <Compile Include="API\APIMessages\Remove.cs" />
         <Compile Include="API\APIMessages\RequestPasswordReset.cs" />
         <Compile Include="API\APIMessages\ResetPassword.cs" />
         <Compile Include="API\APIMessages\Search.cs" />
@@ -88,6 +90,7 @@
         <Compile Include="API\APIResults\IsValidTokenResult.cs" />
         <Compile Include="API\APIResults\LoginResult.cs" />
         <Compile Include="API\APIResults\ManageAssetTokenResult.cs" />
+        <Compile Include="API\APIResults\MetaCallback.cs" />
         <Compile Include="API\APIResults\SearchResult.cs" />
         <Compile Include="API\APIResults\SignupResult.cs" />
         <Compile Include="API\APIResults\UploadResult.cs" />

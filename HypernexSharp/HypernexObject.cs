@@ -511,6 +511,45 @@ namespace HypernexSharp
             });
         }
 
+        public void RemoveAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
+            string avatarId)
+        {
+            Remove remove = new Remove(UploadType.Avatar, CurrentUser.Id, token.content, avatarId);
+            remove.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
+                else
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, null));
+            });
+        }
+        
+        public void RemoveWorld(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
+            string worldId)
+        {
+            Remove remove = new Remove(UploadType.World, CurrentUser.Id, token.content, worldId);
+            remove.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
+                else
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, null));
+            });
+        }
+        
+        public void RemoveFile(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
+            string fileId)
+        {
+            Remove remove = new Remove(UploadType.Media, CurrentUser.Id, token.content, fileId);
+            remove.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
+                else
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, null));
+            });
+        }
+
         public void Search(Action<CallbackResult<SearchResult>> callback, SearchType searchType, string searchTerm)
         {
             Search search = new Search(searchType, searchTerm);
@@ -536,6 +575,38 @@ namespace HypernexSharp
         {
             GetFile getFile = new GetFile(uploaderUserId, fileId, fileToken);
             getFile.GetAttachment(Settings, callback);
+        }
+        
+        public void GetAvatarMeta(Action<CallbackResult<MetaCallback<AvatarMeta>>> callback, string avatarId)
+        {
+            GetMeta getMeta = new GetMeta(UploadType.Avatar, avatarId);
+            getMeta.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    MetaCallback<AvatarMeta> metaCallback = new MetaCallback<AvatarMeta>
+                        {Meta = AvatarMeta.FromJSON(result.result["Meta"])};
+                    callback.Invoke(new CallbackResult<MetaCallback<AvatarMeta>>(true, result.message, metaCallback));
+                }
+                else
+                    callback.Invoke(new CallbackResult<MetaCallback<AvatarMeta>>(false, result.message, null));
+            });
+        }
+
+        public void GetWorldMeta(Action<CallbackResult<MetaCallback<WorldMeta>>> callback, string worldId)
+        {
+            GetMeta getMeta = new GetMeta(UploadType.World, worldId);
+            getMeta.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    MetaCallback<WorldMeta> metaCallback = new MetaCallback<WorldMeta>
+                        {Meta = WorldMeta.FromJSON(result.result["Meta"])};
+                    callback.Invoke(new CallbackResult<MetaCallback<WorldMeta>>(true, result.message, metaCallback));
+                }
+                else
+                    callback.Invoke(new CallbackResult<MetaCallback<WorldMeta>>(false, result.message, null));
+            });
         }
 
         public void AddAssetToken(Action<CallbackResult<ManageAssetTokenResult>> callback, User CurrentUser,

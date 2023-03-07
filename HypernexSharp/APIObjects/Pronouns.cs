@@ -72,6 +72,40 @@ namespace HypernexSharp.APIObjects
             }
             return pronouns;
         }
+
+        public override string ToString()
+        {
+            if (Display.Count <= 1)
+                return NominativeCase ?? "" + "/" + AccusativeCase;
+            string t = "";
+            int i = 0;
+            foreach (PronounCases pronounCases in Display)
+            {
+                switch (pronounCases)
+                {
+                    case PronounCases.NominativeCase:
+                        t += NominativeCase ?? "";
+                        break;
+                    case PronounCases.AccusativeCase:
+                        t += AccusativeCase ?? "";
+                        break;
+                    case PronounCases.ReflexivePronoun:
+                        t += ReflexivePronoun ?? "";
+                        break;
+                    case PronounCases.IndependentGenitiveCase:
+                        t += IndependentGenitiveCase ?? "";
+                        break;
+                    case PronounCases.DependentGenitiveCase:
+                        t += DependentGenitiveCase ?? "";
+                        break;
+                }
+                i++;
+                if (i >= Display.Count || (!DisplayThree && i > 1))
+                    break;
+                t += "/";
+            }
+            return t;
+        }
     }
 
     public class PronounObject
