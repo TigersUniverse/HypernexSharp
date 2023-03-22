@@ -4,6 +4,7 @@ using HypernexSharp.API;
 using HypernexSharp.API.APIMessages;
 using HypernexSharp.API.APIResults;
 using HypernexSharp.APIObjects;
+using HypernexSharp.Socketing;
 using LoginResult = HypernexSharp.APIObjects.LoginResult;
 
 namespace HypernexSharp
@@ -13,6 +14,9 @@ namespace HypernexSharp
         public HypernexSettings Settings { get; }
 
         public HypernexObject(HypernexSettings settings) => Settings = settings;
+
+        private UserSocket _userSocket;
+        private GameServerSocket _gameServerSocket;
 
         public void CreateUser(Action<CallbackResult<SignupResult>> callback)
         {
@@ -151,6 +155,25 @@ namespace HypernexSharp
                 }
                 else
                     callback.Invoke(new CallbackResult<InviteCodeRequiredResult>(false, result.message, null));
+            });
+        }
+        
+        public void GetSocketInfo(Action<CallbackResult<GetSocketInfoResult>> callback)
+        {
+            GetSocketInfo getSocketInfo = new GetSocketInfo();
+            getSocketInfo.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    GetSocketInfoResult getSocketInfoResult = new GetSocketInfoResult
+                    {
+                        IsWSS = result.result["IsWSS"].AsBool,
+                        Port = result.result["Port"].AsInt
+                    };
+                    callback.Invoke(new CallbackResult<GetSocketInfoResult>(true, result.message, getSocketInfoResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<GetSocketInfoResult>(false, result.message, null));
             });
         }
 
@@ -647,6 +670,30 @@ namespace HypernexSharp
                 else
                     callback.Invoke(new CallbackResult<ManageAssetTokenResult>(false, result.message, null));
             });
+        }
+
+        private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
+
+        public UserSocket OpenUserSocket()
+        {
+            if (canOpenSocket())
+            {
+                _userSocket = new UserSocket(this);
+                _userSocket.Open();
+                return _userSocket;
+            }
+            return null;
+        }
+
+        public GameServerSocket OpenGameServerSocket(string serverTokenContent)
+        {
+            if (canOpenSocket())
+            {
+                _gameServerSocket = new GameServerSocket(this, serverTokenContent);
+                _gameServerSocket.Open();
+                return _gameServerSocket;
+            }
+            return null;
         }
     }
 }

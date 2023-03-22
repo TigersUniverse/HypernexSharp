@@ -12,7 +12,8 @@
         public string TokenContent { get; }
 
         public string TargetDomain { get; set; }
-        public bool IsHTTP { get; set; } = false;
+        public bool IsHTTP { get; set; }
+        public bool IsWS { get; set; }
         public string APIVersion { get; set; } = "v1";
 
         public string APIURL
