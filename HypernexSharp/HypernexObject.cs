@@ -672,6 +672,21 @@ namespace HypernexSharp
             });
         }
 
+        public void GetInstances(Action<CallbackResult<InstancesResult>> callback, User CurrentUser, Token token)
+        {
+            SimpleUserIdToken instances = new SimpleUserIdToken("instances", CurrentUser.Id, token.content);
+            instances.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    InstancesResult instancesResult = new InstancesResult(result.result);
+                    callback.Invoke(new CallbackResult<InstancesResult>(true, result.message, instancesResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<InstancesResult>(false, result.message, null));
+            });
+        }
+
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
 
         public UserSocket OpenUserSocket()

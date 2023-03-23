@@ -75,6 +75,7 @@
         <Compile Include="APIObjects\PronounCases.cs" />
         <Compile Include="APIObjects\Pronouns.cs" />
         <Compile Include="APIObjects\Rank.cs" />
+        <Compile Include="APIObjects\SafeInstance.cs" />
         <Compile Include="APIObjects\SetPronouns.cs" />
         <Compile Include="APIObjects\Status.cs" />
         <Compile Include="APIObjects\Token.cs" />
@@ -110,6 +111,7 @@
         <Compile Include="API\APIResults\EmptyResult.cs" />
         <Compile Include="API\APIResults\GetSocketInfoResult.cs" />
         <Compile Include="API\APIResults\GetUserResult.cs" />
+        <Compile Include="API\APIResults\InstancesResult.cs" />
         <Compile Include="API\APIResults\InviteCodeRequiredResult.cs" />
         <Compile Include="API\APIResults\IsValidTokenResult.cs" />
         <Compile Include="API\APIResults\LoginResult.cs" />
@@ -161,6 +163,7 @@
         <Compile Include="Socketing\SocketResponses\UserLeft.cs" />
         <Compile Include="Socketing\UserSocket.cs" />
         <Compile Include="SocketObjects\InstanceMeta.cs" />
+        <Compile Include="SocketObjects\InstanceProtocol.cs" />
         <Compile Include="SocketObjects\InstancePublicity.cs" />
     </ItemGroup>
     <ItemGroup>
@@ -181,13 +184,7 @@
         <ItemGroup>
             <InputAssemblies Include="websocket-sharp.dll" />
         </ItemGroup>
-        <ILRepack
-                OutputType="$(OutputType)"
-                MainAssembly="$(AssemblyName).dll"
-                OutputAssembly="$(AssemblyName).dll"
-                InputAssemblies="@(InputAssemblies)"
-                InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)"
-                WorkingDirectory="$(WorkingDirectory)" />
+        <ILRepack OutputType="$(OutputType)" MainAssembly="$(AssemblyName).dll" OutputAssembly="$(AssemblyName).dll" InputAssemblies="@(InputAssemblies)" InternalizeExcludeAssemblies="@(InternalizeExcludeAssemblies)" WorkingDirectory="$(WorkingDirectory)" />
     </Target>
 
 </Project>

@@ -134,12 +134,13 @@ namespace HypernexSharp.Socketing
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(sendInvite).GetJSON());
         }
 
-        public void RequestNewInstance(WorldMeta worldMeta, InstancePublicity instancePublicity)
+        public void RequestNewInstance(WorldMeta worldMeta, InstancePublicity instancePublicity, InstanceProtocol instanceProtocol)
         {
             RequestNewInstance requestNewInstance = new RequestNewInstance
             {
                 worldId = worldMeta.Id,
-                instancePublicity = instancePublicity
+                instancePublicity = instancePublicity,
+                instanceProtocol = instanceProtocol
             };
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(requestNewInstance).GetJSON());
         }

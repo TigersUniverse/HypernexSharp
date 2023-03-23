@@ -1,4 +1,5 @@
 ﻿using HypernexSharp.Libs;
+using HypernexSharp.SocketObjects;
 
 namespace HypernexSharp.Socketing.SocketResponses
 {
@@ -8,11 +9,13 @@ namespace HypernexSharp.Socketing.SocketResponses
         public JSONNode Result { get; }
 
         public string temporaryId;
+        public InstanceProtocol instanceProtocol;
 
         public RequestedInstanceCreated(JSONNode result)
         {
             Result = result;
             temporaryId = result["temporaryId"].Value;
+            instanceProtocol = (InstanceProtocol) result["instanceProtocol"].AsInt;
         }
     }
 }

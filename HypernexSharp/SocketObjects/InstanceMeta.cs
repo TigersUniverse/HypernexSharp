@@ -11,6 +11,7 @@ namespace HypernexSharp.SocketObjects
         public string InstanceId { get; set; }
         public string WorldId { get; set; }
         public InstancePublicity InstancePublicity { get; set; }
+        public InstanceProtocol InstanceProtocol { get; set; }
         public string InstanceCreatorId { get; set; }
         public List<string> InvitedUsers { get; set; }
         public List<string> BannedUsers { get; set; }
@@ -26,6 +27,7 @@ namespace HypernexSharp.SocketObjects
                 InstanceId = node["InstanceId"].Value,
                 WorldId = node["WorldId"].Value,
                 InstancePublicity = (InstancePublicity) node["InstancePublicity"].AsInt,
+                InstanceProtocol = (InstanceProtocol) node["InstanceProtocol"].AsInt,
                 InstanceCreatorId = node["InstanceCreatorId"].Value,
                 InvitedUsers = new List<string>(),
                 BannedUsers = new List<string>(),
