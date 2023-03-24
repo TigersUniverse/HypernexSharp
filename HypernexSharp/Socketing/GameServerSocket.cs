@@ -13,11 +13,12 @@ namespace HypernexSharp.Socketing
         private FromGameServerMessage _fromGameServerMessage;
         private SocketInstance _socketInstance;
 
+        public bool IsOpen => _socketInstance?.IsOpen ?? false;
         public Action OnOpen = () => { };
         public Action<ISocketResponse> OnSocketEvent = response => { };
         public Action<bool> OnClose = hasError => { };
 
-        public GameServerSocket(HypernexObject hypernexObject, string serverTokenContent)
+        internal GameServerSocket(HypernexObject hypernexObject, string serverTokenContent, Action onReady = null)
         {
             _hypernexObject = hypernexObject;
             _fromGameServerMessage = new FromGameServerMessage(serverTokenContent);
@@ -26,7 +27,11 @@ namespace HypernexSharp.Socketing
                 if (result.success)
                 {
                     _socketInstance = new SocketInstance(hypernexObject.Settings, result.result);
-                    _socketInstance.OnConnect += OnOpen;
+                    _socketInstance.OnConnect += () =>
+                    {
+                        _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(new EmptyAuth()).GetJSON());
+                        OnOpen.Invoke();
+                    };
                     _socketInstance.OnMessage += node =>
                     {
                         try
@@ -101,6 +106,7 @@ namespace HypernexSharp.Socketing
                         catch (Exception) {}
                     };
                     _socketInstance.OnDisconnect += OnClose;
+                    onReady?.Invoke();
                 }
             });
         }

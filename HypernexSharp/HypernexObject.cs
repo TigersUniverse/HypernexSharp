@@ -689,26 +689,47 @@ namespace HypernexSharp
 
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
 
-        public UserSocket OpenUserSocket()
+        public UserSocket OpenUserSocket(Action readyToOpen = null, bool openWhenReady = true)
         {
             if (canOpenSocket())
             {
-                _userSocket = new UserSocket(this);
-                _userSocket.Open();
+                _userSocket = new UserSocket(this, () =>
+                {
+                    if (openWhenReady)
+                        _userSocket.Open();
+                    readyToOpen?.Invoke();
+                });
                 return _userSocket;
             }
             return null;
         }
 
-        public GameServerSocket OpenGameServerSocket(string serverTokenContent)
+        public void CloseUserSocket()
+        {
+            _userSocket?.Close();
+            _userSocket = null;
+        }
+
+        public GameServerSocket OpenGameServerSocket(string serverTokenContent, Action readyToOpen = null,
+            bool openWhenReady = true)
         {
             if (canOpenSocket())
             {
-                _gameServerSocket = new GameServerSocket(this, serverTokenContent);
-                _gameServerSocket.Open();
+                _gameServerSocket = new GameServerSocket(this, serverTokenContent, () =>
+                {
+                    if (openWhenReady)
+                        _gameServerSocket.Open();
+                    readyToOpen?.Invoke();
+                });
                 return _gameServerSocket;
             }
             return null;
+        }
+
+        public void CloseGameServerSocket()
+        {
+            _gameServerSocket?.Close();
+            _gameServerSocket = null;
         }
     }
 }

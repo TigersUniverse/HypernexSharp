@@ -14,12 +14,13 @@ namespace HypernexSharp.Socketing
         private HypernexObject _hypernexObject;
         private FromUserMessage _fromUserMessage;
         private SocketInstance _socketInstance;
-
+        
+        public bool IsOpen => _socketInstance?.IsOpen ?? false;
         public Action OnOpen = () => { };
         public Action<ISocketResponse> OnSocketEvent = response => { };
         public Action<bool> OnClose = hasError => { };
 
-        public UserSocket(HypernexObject hypernexObject)
+        internal UserSocket(HypernexObject hypernexObject, Action onReady = null)
         {
             _hypernexObject = hypernexObject;
             _fromUserMessage =
@@ -29,7 +30,11 @@ namespace HypernexSharp.Socketing
                 if (result.success)
                 {
                     _socketInstance = new SocketInstance(hypernexObject.Settings, result.result);
-                    _socketInstance.OnConnect += OnOpen;
+                    _socketInstance.OnConnect += () =>
+                    {
+                        _socketInstance.SendMessage(_fromUserMessage.CreateMessage(new EmptyAuth()).GetJSON());
+                        OnOpen.Invoke();
+                    };
                     _socketInstance.OnMessage += node =>
                     {
                         try
@@ -85,6 +90,7 @@ namespace HypernexSharp.Socketing
                         catch (Exception) {}
                     };
                     _socketInstance.OnDisconnect += OnClose;
+                    onReady?.Invoke();
                 }
             });
         }
