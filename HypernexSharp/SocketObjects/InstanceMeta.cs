@@ -6,8 +6,9 @@ namespace HypernexSharp.SocketObjects
 {
     public class InstanceMeta
     {
-        public Uri Uri { get; set; }
+        public string Uri { get; set; }
         public string GameServerId { get; set; }
+        public string TemporaryId { get; set; }
         public string InstanceId { get; set; }
         public string WorldId { get; set; }
         public InstancePublicity InstancePublicity { get; set; }
@@ -22,8 +23,9 @@ namespace HypernexSharp.SocketObjects
         {
             InstanceMeta instanceMeta = new InstanceMeta
             {
-                Uri = new Uri(node["Uri"].Value),
+                Uri = node["Uri"].Value,
                 GameServerId = node["GameServerId"].Value,
+                TemporaryId = node["TemporaryId"].Value,
                 InstanceId = node["InstanceId"].Value,
                 WorldId = node["WorldId"].Value,
                 InstancePublicity = (InstancePublicity) node["InstancePublicity"].AsInt,

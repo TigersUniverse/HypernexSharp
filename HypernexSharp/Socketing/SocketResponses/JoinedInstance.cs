@@ -8,7 +8,7 @@ namespace HypernexSharp.Socketing.SocketResponses
         public string message => "JoinedInstance";
         public JSONNode Result { get; }
 
-        public Uri Uri;
+        public string Uri;
         public string gameServerId;
         public string instanceId;
         public string tempUserToken;
@@ -16,7 +16,7 @@ namespace HypernexSharp.Socketing.SocketResponses
         public JoinedInstance(JSONNode result)
         {
             Result = result;
-            Uri = new Uri(result["Uri"].Value);
+            Uri = result["Uri"].Value;
             gameServerId = result["gameServerId"].Value;
             instanceId = result["instanceId"].Value;
             tempUserToken = result["tempUserToken"].Value;

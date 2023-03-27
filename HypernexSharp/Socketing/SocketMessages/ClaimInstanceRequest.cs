@@ -8,13 +8,13 @@ namespace HypernexSharp.Socketing.SocketMessages
         public string message => "ClaimInstanceRequest";
         
         public string TemporaryId;
-        public Uri Uri;
+        public string Uri;
 
         public JSONObject GetArgs()
         {
             JSONObject o = new JSONObject();
             o.Add("TemporaryId", TemporaryId);
-            o.Add("Uri", Uri.ToString());
+            o.Add("Uri", Uri);
             return o;
         }
     }

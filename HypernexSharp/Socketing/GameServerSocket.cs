@@ -175,7 +175,7 @@ namespace HypernexSharp.Socketing
             _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(unbanUser).GetJSON());
         }
 
-        public void ClaimInstanceRequest(string temporaryId, Uri uri)
+        public void ClaimInstanceRequest(string temporaryId, string uri)
         {
             ClaimInstanceRequest claimInstanceRequest = new ClaimInstanceRequest
             {
@@ -183,6 +183,12 @@ namespace HypernexSharp.Socketing
                 Uri = uri
             };
             _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(claimInstanceRequest).GetJSON());
+        }
+
+        public void RemoveInstance(string instanceId)
+        {
+            RemoveInstance removeInstance = new RemoveInstance {InstanceId = instanceId};
+            _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(removeInstance).GetJSON());
         }
 
         public bool Open() => _socketInstance.Open();

@@ -10,12 +10,14 @@ namespace HypernexSharp.Socketing.SocketResponses
 
         public string tempUserToken;
         public string userId;
+        public string instanceId;
         
         public TempUserToken(JSONNode result)
         {
             Result = result;
             tempUserToken = result["tempUserToken"].Value;
             userId = result["userId"].Value;
+            instanceId = result["instanceId"].Value;
         }
     }
 }

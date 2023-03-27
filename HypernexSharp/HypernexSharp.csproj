@@ -139,15 +139,18 @@
         <Compile Include="Socketing\SocketMessages\JoinInstance.cs" />
         <Compile Include="Socketing\SocketMessages\KickUser.cs" />
         <Compile Include="Socketing\SocketMessages\LeaveInstance.cs" />
+        <Compile Include="Socketing\SocketMessages\RemoveInstance.cs" />
         <Compile Include="Socketing\SocketMessages\RemoveModerator.cs" />
         <Compile Include="Socketing\SocketMessages\RequestNewInstance.cs" />
         <Compile Include="Socketing\SocketMessages\SendInvite.cs" />
+        <Compile Include="Socketing\SocketMessages\ShareAvatarToken.cs" />
         <Compile Include="Socketing\SocketMessages\UnbanUser.cs" />
         <Compile Include="Socketing\SocketResponses\AddedModerator.cs" />
         <Compile Include="Socketing\SocketResponses\BannedUser.cs" />
         <Compile Include="Socketing\SocketResponses\EmptyResult.cs" />
         <Compile Include="Socketing\SocketResponses\FailedToJoinInstance.cs" />
         <Compile Include="Socketing\SocketResponses\FailedToLeaveInstance.cs" />
+        <Compile Include="Socketing\SocketResponses\FailedToShareAvatarToken.cs" />
         <Compile Include="Socketing\SocketResponses\GotInvite.cs" />
         <Compile Include="Socketing\SocketResponses\InstanceOpened.cs" />
         <Compile Include="Socketing\SocketResponses\JoinedInstance.cs" />
@@ -158,6 +161,7 @@
         <Compile Include="Socketing\SocketResponses\RequestedInstanceCreated.cs" />
         <Compile Include="Socketing\SocketResponses\SelectedGameServer.cs" />
         <Compile Include="Socketing\SocketResponses\SendAuth.cs" />
+        <Compile Include="Socketing\SocketResponses\SharedAvatarToken.cs" />
         <Compile Include="Socketing\SocketResponses\TempUserToken.cs" />
         <Compile Include="Socketing\SocketResponses\UnbannedUser.cs" />
         <Compile Include="Socketing\SocketResponses\UpdatedInstance.cs" />

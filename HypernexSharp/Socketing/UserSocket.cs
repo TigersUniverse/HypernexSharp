@@ -74,6 +74,19 @@ namespace HypernexSharp.Socketing
                                     OnSocketEvent.Invoke(gotInvite);
                                     break;
                                 }
+                                case "sharedavatartoken":
+                                {
+                                    SharedAvatarToken sharedAvatarToken = new SharedAvatarToken(node["result"]);
+                                    OnSocketEvent.Invoke(sharedAvatarToken);
+                                    break;
+                                }
+                                case "failedtoshareavatartoken":
+                                {
+                                    FailedToShareAvatarToken failedToShareAvatarToken =
+                                        new FailedToShareAvatarToken(node["result"]);
+                                    OnSocketEvent.Invoke(failedToShareAvatarToken);
+                                    break;
+                                }
                                 case "instanceopened":
                                 {
                                     InstanceOpened instanceOpened = new InstanceOpened(node["result"]);
@@ -138,6 +151,17 @@ namespace HypernexSharp.Socketing
                 toInstanceId = toInstanceId
             };
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(sendInvite).GetJSON());
+        }
+
+        public void ShareAvatarToken(User targetUser, string avatarId, string avatarToken)
+        {
+            ShareAvatarToken shareAvatarToken = new ShareAvatarToken
+            {
+                targetUserId = targetUser.Id,
+                avatarId = avatarId,
+                avatarToken = avatarToken
+            };
+            _socketInstance.SendMessage(_fromUserMessage.CreateMessage(shareAvatarToken).GetJSON());
         }
 
         public void RequestNewInstance(WorldMeta worldMeta, InstancePublicity instancePublicity, InstanceProtocol instanceProtocol)
