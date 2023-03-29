@@ -12,6 +12,7 @@ namespace HypernexSharp.APIObjects
         public List<string> Tags { get; } = new List<string>();
         public string ThumbnailURL { get; set; }
         public List<string> IconURLs { get; } = new List<string>();
+        public List<string> ServerScripts { get; } = new List<string>();
         public BuildPlatform BuildPlatform { get; set; }
         public List<Builds> Builds { get; } = new List<Builds>();
 
@@ -31,6 +32,10 @@ namespace HypernexSharp.APIObjects
             foreach (string iconUrL in IconURLs)
                 iconarray.Add(iconUrL);
             o.Add("IconURLs", iconarray);
+            JSONArray scriptsarray = new JSONArray();
+            foreach (string script in ServerScripts)
+                scriptsarray.Add(script);
+            o.Add("ServerScripts", scriptsarray);
             o.Add("BuildPlatform", (int) BuildPlatform);
             return o;
         }
@@ -42,6 +47,8 @@ namespace HypernexSharp.APIObjects
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Tags"].AsArray)
                 worldMeta.Tags.Add(keyValuePair.Value.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["IconURLs"].AsArray)
+                worldMeta.IconURLs.Add(keyValuePair.Value);
+            foreach (KeyValuePair<string,JSONNode> keyValuePair in node["ServerScripts"].AsArray)
                 worldMeta.IconURLs.Add(keyValuePair.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Builds"].AsArray)
                 worldMeta.Builds.Add(APIObjects.Builds.FromJSON(keyValuePair.Value));

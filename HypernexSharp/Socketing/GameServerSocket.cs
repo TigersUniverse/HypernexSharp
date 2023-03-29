@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Reflection;
+using HypernexSharp.API.APIMessages;
 using HypernexSharp.Libs;
 using HypernexSharp.Socketing.SocketMessages;
 using HypernexSharp.Socketing.SocketResponses;
@@ -10,13 +12,14 @@ namespace HypernexSharp.Socketing
     public class GameServerSocket
     {
         private HypernexObject _hypernexObject;
-        private FromGameServerMessage _fromGameServerMessage;
         private SocketInstance _socketInstance;
 
         public bool IsOpen => _socketInstance?.IsOpen ?? false;
         public Action OnOpen = () => { };
         public Action<ISocketResponse> OnSocketEvent = response => { };
         public Action<bool> OnClose = hasError => { };
+        
+        internal FromGameServerMessage _fromGameServerMessage;
 
         internal GameServerSocket(HypernexObject hypernexObject, string serverTokenContent, Action onReady = null)
         {
@@ -189,6 +192,12 @@ namespace HypernexSharp.Socketing
         {
             RemoveInstance removeInstance = new RemoveInstance {InstanceId = instanceId};
             _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(removeInstance).GetJSON());
+        }
+        
+        public void GetServerScript(Action<Stream> callback, string uploaderUserId, string fileId)
+        {
+            GetFile getFile = new GetFile(uploaderUserId, fileId, this);
+            getFile.GetAttachment(_hypernexObject.Settings, callback);
         }
 
         public bool Open() => _socketInstance.Open();
