@@ -6,6 +6,7 @@ namespace HypernexSharp.APIObjects
     public class AvatarMeta
     {
         public string Id { get; set; }
+        public string OwnerId { get; set; }
         public AvatarPublicity Publicity { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -18,6 +19,7 @@ namespace HypernexSharp.APIObjects
         {
             JSONObject o = new JSONObject();
             o.Add("Id", Id);
+            o.Add("OwnerId", OwnerId);
             o.Add("Publicity", (int) Publicity);
             o.Add("Name", Name);
             o.Add("Description", Description);
@@ -32,8 +34,9 @@ namespace HypernexSharp.APIObjects
 
         public static AvatarMeta FromJSON(JSONNode node)
         {
-            AvatarMeta avatarMeta = new AvatarMeta(node["Id"].Value, (AvatarPublicity) node["Publicity"].AsInt,
-                node["Name"].Value, node["Description"].Value, node["ImageURL"].Value);
+            AvatarMeta avatarMeta = new AvatarMeta(node["Id"].Value, node["OwenerId"].Value,
+                (AvatarPublicity) node["Publicity"].AsInt, node["Name"].Value, node["Description"].Value,
+                node["ImageURL"].Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Tags"].AsArray)
                 avatarMeta.Tags.Add(keyValuePair.Value.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Builds"].AsArray)
@@ -41,9 +44,11 @@ namespace HypernexSharp.APIObjects
             return avatarMeta;
         }
 
-        public AvatarMeta(string Id, AvatarPublicity Publicity, string Name, string Description, string ImageURL)
+        public AvatarMeta(string Id, string OwnerId, AvatarPublicity Publicity, string Name, string Description,
+            string ImageURL)
         {
             this.Id = Id;
+            this.OwnerId = OwnerId;
             this.Publicity = Publicity;
             this.Name = Name;
             this.Description = Description;

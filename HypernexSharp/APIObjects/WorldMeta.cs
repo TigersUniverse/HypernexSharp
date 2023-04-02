@@ -6,6 +6,7 @@ namespace HypernexSharp.APIObjects
     public class WorldMeta
     {
         public string Id { get; set; }
+        public string OwnerId { get; set; }
         public WorldPublicity Publicity { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
@@ -20,6 +21,7 @@ namespace HypernexSharp.APIObjects
         {
             JSONObject o = new JSONObject();
             o.Add("Id", Id);
+            o.Add("OwnerId", OwnerId);
             o.Add("Publicity", (int) Publicity);
             o.Add("Name", Name);
             o.Add("Description", Description);
@@ -42,8 +44,9 @@ namespace HypernexSharp.APIObjects
 
         public static WorldMeta FromJSON(JSONNode node)
         {
-            WorldMeta worldMeta = new WorldMeta(node["Id"].Value, (WorldPublicity) node["Publicity"].AsInt,
-                node["Name"].Value, node["Description"].Value, node["ThumbnailURL"].Value);
+            WorldMeta worldMeta = new WorldMeta(node["Id"].Value, node["OwnerId"].Value,
+                (WorldPublicity) node["Publicity"].AsInt, node["Name"].Value, node["Description"].Value,
+                node["ThumbnailURL"].Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Tags"].AsArray)
                 worldMeta.Tags.Add(keyValuePair.Value.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["IconURLs"].AsArray)
@@ -54,10 +57,12 @@ namespace HypernexSharp.APIObjects
                 worldMeta.Builds.Add(APIObjects.Builds.FromJSON(keyValuePair.Value));
             return worldMeta;
         }
-        
-        public WorldMeta(string Id, WorldPublicity Publicity, string Name, string Description, string ThumbnailURL)
+
+        public WorldMeta(string Id, string OwnerId, WorldPublicity Publicity, string Name, string Description,
+            string ThumbnailURL)
         {
             this.Id = Id;
+            this.OwnerId = OwnerId;
             this.Publicity = Publicity;
             this.Name = Name;
             this.Description = Description;
