@@ -41,7 +41,7 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 
-namespace HypernexSharp.Libs
+namespace SimpleJSON
 {
     public enum JSONNodeType
     {

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using HypernexSharp.API.APIMessages;
-using HypernexSharp.Libs;
+using SimpleJSON;
 using HypernexSharp.Socketing.SocketMessages;
 using HypernexSharp.Socketing.SocketResponses;
 
@@ -188,13 +188,23 @@ namespace HypernexSharp.Socketing
             _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(claimInstanceRequest).GetJSON());
         }
 
+        public void InstanceReady(string instanceId, string uri)
+        {
+            InstanceReady instanceReady = new InstanceReady
+            {
+                instanceId = instanceId,
+                uri = uri
+            };
+            _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(instanceReady).GetJSON());
+        }
+
         public void RemoveInstance(string instanceId)
         {
             RemoveInstance removeInstance = new RemoveInstance {InstanceId = instanceId};
             _socketInstance.SendMessage(_fromGameServerMessage.CreateMessage(removeInstance).GetJSON());
         }
         
-        public void GetServerScript(Action<Stream> callback, string uploaderUserId, string fileId)
+        public void GetServerScript(Action<string, Stream> callback, string uploaderUserId, string fileId)
         {
             GetFile getFile = new GetFile(uploaderUserId, fileId, this);
             getFile.GetAttachment(_hypernexObject.Settings, callback);

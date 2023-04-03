@@ -136,6 +136,7 @@
         <Compile Include="Socketing\SocketMessages\BanUser.cs" />
         <Compile Include="Socketing\SocketMessages\EmptyAuth.cs" />
         <Compile Include="Socketing\SocketMessages\ClaimInstanceRequest.cs" />
+        <Compile Include="Socketing\SocketMessages\InstanceReady.cs" />
         <Compile Include="Socketing\SocketMessages\JoinInstance.cs" />
         <Compile Include="Socketing\SocketMessages\KickUser.cs" />
         <Compile Include="Socketing\SocketMessages\LeaveInstance.cs" />

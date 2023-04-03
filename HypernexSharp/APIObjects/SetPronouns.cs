@@ -1,5 +1,5 @@
 ﻿using System;
-using HypernexSharp.Libs;
+using SimpleJSON;
 
 namespace HypernexSharp.APIObjects
 {

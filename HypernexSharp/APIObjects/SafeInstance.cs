@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using HypernexSharp.Libs;
+using SimpleJSON;
 using HypernexSharp.SocketObjects;
 
 namespace HypernexSharp.APIObjects

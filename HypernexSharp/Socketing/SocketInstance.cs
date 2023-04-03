@@ -1,6 +1,6 @@
 ﻿using System;
 using HypernexSharp.API.APIResults;
-using HypernexSharp.Libs;
+using SimpleJSON;
 using WebSocketSharp;
 
 namespace HypernexSharp.Socketing

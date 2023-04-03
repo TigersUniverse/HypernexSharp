@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using HypernexSharp.Libs;
+using SimpleJSON;
 
 namespace HypernexSharp.API
 {
@@ -48,6 +48,16 @@ namespace HypernexSharp.API
                 Stream res = await HTTPTools.GETFile(settings.APIURL + Endpoint + GetQuery());
                 if(callback != null)
                     callback.Invoke(res);
+            });
+        }
+        
+        internal void GetAttachment(HypernexSettings settings, Action<string, Stream> callback = null)
+        {
+            Task.Factory.StartNew(async () =>
+            {
+                (string, Stream) res = await HTTPTools.GETFileAndName(settings.APIURL + Endpoint + GetQuery());
+                if(callback != null)
+                    callback.Invoke(res.Item1, res.Item2);
             });
         }
 

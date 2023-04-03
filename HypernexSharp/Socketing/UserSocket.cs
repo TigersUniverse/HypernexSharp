@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Reflection;
 using HypernexSharp.APIObjects;
-using HypernexSharp.Libs;
+using SimpleJSON;
 using HypernexSharp.Socketing.SocketMessages;
 using HypernexSharp.Socketing.SocketResponses;
 using HypernexSharp.SocketObjects;

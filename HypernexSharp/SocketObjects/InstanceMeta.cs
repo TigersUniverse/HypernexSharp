@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using HypernexSharp.Libs;
+using SimpleJSON;
 
 namespace HypernexSharp.SocketObjects
 {
@@ -19,7 +19,7 @@ namespace HypernexSharp.SocketObjects
         public List<string> ConnectedUsers { get; set; }
         public List<string> Moderators { get; set; }
 
-        public static InstanceMeta FromJSON(JSONNode node)
+        internal static InstanceMeta FromJSON(JSONNode node)
         {
             InstanceMeta instanceMeta = new InstanceMeta
             {

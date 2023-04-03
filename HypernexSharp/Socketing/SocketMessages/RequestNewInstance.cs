@@ -1,4 +1,4 @@
-﻿using HypernexSharp.Libs;
+﻿using SimpleJSON;
 using HypernexSharp.SocketObjects;
 
 namespace HypernexSharp.Socketing.SocketMessages
