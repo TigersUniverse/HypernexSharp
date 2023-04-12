@@ -24,6 +24,8 @@ namespace HypernexSharp.APIObjects
         public int BanCount { get; set; }
         public WarnStatus WarnStatus { get; set; }
         public int WarnCount { get; set; }
+        public List<string> Avatars { get; set; }
+        public List<string> Worlds { get; set; }
 
         public static User FromJSON(JSONNode node)
         {
@@ -95,6 +97,18 @@ namespace HypernexSharp.APIObjects
                 user.WarnStatus = WarnStatus.FromJSON(node["WarnStatus"]);
             if (node.HasKey("WarnCount"))
                 user.WarnCount = node["WarnCount"].AsInt;
+            if (node.HasKey("Avatars"))
+            {
+                user.Avatars = new List<string>();
+                foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Avatars"].AsArray)
+                    user.Avatars.Add(keyValuePair.Value.Value);
+            }
+            if (node.HasKey("Worlds"))
+            {
+                user.Worlds = new List<string>();
+                foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Worlds"].AsArray)
+                    user.Worlds.Add(keyValuePair.Value.Value);
+            }
             return user;
         }
     }
