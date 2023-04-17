@@ -24,7 +24,7 @@ namespace HypernexSharp.API
         {
             Task.Factory.StartNew(async () =>
             {
-                (Stream, Dictionary<string, string>) form = GetFileForm();
+                (FileStream, Dictionary<string, string>) form = GetFileForm();
                 string res = await HTTPTools.POSTFile(settings.APIURL + Endpoint, form.Item2, form.Item1);
                 if(callback != null)
                     callback.Invoke(new APIResult(res));
@@ -65,6 +65,6 @@ namespace HypernexSharp.API
 
         protected virtual JSONNode GetNode(){ return new JSONObject(); }
         protected virtual string GetQuery(){ return String.Empty; }
-        protected virtual (Stream, Dictionary<string, string>) GetFileForm(){ return (null, null); }
+        protected virtual (FileStream, Dictionary<string, string>) GetFileForm(){ return (null, null); }
     }
 }

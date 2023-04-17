@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using SimpleJSON;
 
 namespace HypernexSharp.APIObjects
 {
+    [Serializable]
     public class WorldMeta
     {
         public string Id { get; set; }

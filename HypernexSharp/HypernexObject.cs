@@ -483,55 +483,44 @@ namespace HypernexSharp
             });
         }
 
-        public void UploadFile(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            Stream stream)
+        private void Upload(Action<CallbackResult<UploadResult>> callback, Upload upload)
         {
-            Upload upload = new Upload(CurrentUser.Id, token.content, stream);
             upload.SendForm(Settings, result =>
             {
                 if (result.success)
                 {
                     UploadResult uploadResult = new UploadResult
                         {UploadData = FileData.FromJSON(result.result["UploadData"])};
+                    if (result.result.HasKey("AvatarId"))
+                        uploadResult.AvatarId = result.result["AvatarId"].Value;
+                    if (result.result.HasKey("WorldId"))
+                        uploadResult.AvatarId = result.result["WorldId"].Value;
                     callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
                 }
                 else
                     callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
             });
+        }
+
+        public void UploadFile(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
+            FileStream stream)
+        {
+            Upload upload = new Upload(CurrentUser.Id, token.content, stream);
+            Upload(callback, upload);
         }
         
         public void UploadAvatar(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            Stream stream, AvatarMeta avatarMeta)
+            FileStream stream, AvatarMeta avatarMeta)
         {
             Upload upload = new Upload(CurrentUser.Id, token.content, stream, avatarMeta);
-            upload.SendForm(Settings, result =>
-            {
-                if (result.success)
-                {
-                    UploadResult uploadResult = new UploadResult
-                        {UploadData = FileData.FromJSON(result.result["UploadData"])};
-                    callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
-                }
-                else
-                    callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
-            });
+            Upload(callback, upload);
         }
         
         public void UploadWorld(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            Stream stream, WorldMeta worldMeta)
+            FileStream stream, WorldMeta worldMeta)
         {
             Upload upload = new Upload(CurrentUser.Id, token.content, stream, worldMeta);
-            upload.SendForm(Settings, result =>
-            {
-                if (result.success)
-                {
-                    UploadResult uploadResult = new UploadResult
-                        {UploadData = FileData.FromJSON(result.result["UploadData"])};
-                    callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
-                }
-                else
-                    callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
-            });
+            Upload(callback, upload);
         }
 
         public void RemoveAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,

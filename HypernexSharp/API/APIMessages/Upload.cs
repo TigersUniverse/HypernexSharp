@@ -6,7 +6,7 @@ namespace HypernexSharp.API.APIMessages
 {
     public class Upload : APIMessage
     {
-        public Stream file { get; }
+        public FileStream file { get; }
         public string userid { get; }
         public string tokenContent { get; }
         public AvatarMeta avatarMeta { get; }
@@ -14,26 +14,26 @@ namespace HypernexSharp.API.APIMessages
 
         protected override string Endpoint => "upload";
 
-        protected override (Stream, Dictionary<string, string>) GetFileForm()
+        protected override (FileStream, Dictionary<string, string>) GetFileForm()
         {
             Dictionary<string, string> collection = new Dictionary<string, string>();
             collection.Add("userid", userid);
             collection.Add("tokenContent", tokenContent);
             if(avatarMeta != null)
-                collection.Add("avatarMeta", avatarMeta.ToString());
+                collection.Add("avatarMeta", avatarMeta.GetNode().ToString());
             else if(worldMeta != null)
-                collection.Add("worldMeta", worldMeta.ToString());
+                collection.Add("worldMeta", worldMeta.GetNode().ToString());
             return (file, collection);
         }
 
-        public Upload(string userid, string tokenContent, Stream file)
+        public Upload(string userid, string tokenContent, FileStream file)
         {
             this.userid = userid;
             this.tokenContent = tokenContent;
             this.file = file;
         }
         
-        public Upload(string userid, string tokenContent, Stream file, AvatarMeta avatarMeta)
+        public Upload(string userid, string tokenContent, FileStream file, AvatarMeta avatarMeta)
         {
             this.userid = userid;
             this.tokenContent = tokenContent;
@@ -41,7 +41,7 @@ namespace HypernexSharp.API.APIMessages
             this.avatarMeta = avatarMeta;
         }
         
-        public Upload(string userid, string tokenContent, Stream file, WorldMeta worldMeta)
+        public Upload(string userid, string tokenContent, FileStream file, WorldMeta worldMeta)
         {
             this.userid = userid;
             this.tokenContent = tokenContent;
