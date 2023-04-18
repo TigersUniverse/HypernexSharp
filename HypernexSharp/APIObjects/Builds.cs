@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using System.Collections.Generic;
+using SimpleJSON;
 
 namespace HypernexSharp.APIObjects
 {
@@ -6,7 +7,8 @@ namespace HypernexSharp.APIObjects
     {
         public string FileId { get; set; }
         public BuildPlatform BuildPlatform { get; set; }
-        
+        public List<string> ServerScripts { get; } = new List<string>();
+
         public JSONNode GetNode()
         {
             JSONObject o = new JSONObject();
@@ -22,6 +24,9 @@ namespace HypernexSharp.APIObjects
                 FileId = node["FileId"].Value,
                 BuildPlatform = (BuildPlatform) node["BuildPlatform"].AsInt
             };
+            if(node.HasKey("ServerScripts"))
+                foreach (KeyValuePair<string,JSONNode> keyValuePair in node["ServerScripts"].AsArray)
+                    builds.ServerScripts.Add(keyValuePair.Value.Value);
             return builds;
         }
     }

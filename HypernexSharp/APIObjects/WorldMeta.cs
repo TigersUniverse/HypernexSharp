@@ -53,8 +53,6 @@ namespace HypernexSharp.APIObjects
                 worldMeta.Tags.Add(keyValuePair.Value.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["IconURLs"].AsArray)
                 worldMeta.IconURLs.Add(keyValuePair.Value);
-            foreach (KeyValuePair<string,JSONNode> keyValuePair in node["ServerScripts"].AsArray)
-                worldMeta.IconURLs.Add(keyValuePair.Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Builds"].AsArray)
                 worldMeta.Builds.Add(APIObjects.Builds.FromJSON(keyValuePair.Value));
             return worldMeta;
