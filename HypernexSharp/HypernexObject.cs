@@ -494,7 +494,7 @@ namespace HypernexSharp
                     if (result.result.HasKey("AvatarId"))
                         uploadResult.AvatarId = result.result["AvatarId"].Value;
                     if (result.result.HasKey("WorldId"))
-                        uploadResult.AvatarId = result.result["WorldId"].Value;
+                        uploadResult.WorldId = result.result["WorldId"].Value;
                     callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
                 }
                 else

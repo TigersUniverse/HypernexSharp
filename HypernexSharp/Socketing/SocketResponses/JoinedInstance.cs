@@ -12,6 +12,7 @@ namespace HypernexSharp.Socketing.SocketResponses
         public string gameServerId;
         public string instanceId;
         public string tempUserToken;
+        public string worldId;
 
         public JoinedInstance(JSONNode result)
         {
@@ -20,6 +21,7 @@ namespace HypernexSharp.Socketing.SocketResponses
             gameServerId = result["gameServerId"].Value;
             instanceId = result["instanceId"].Value;
             tempUserToken = result["tempUserToken"].Value;
+            worldId = result["worldId"].Value;
         }
     }
 }
