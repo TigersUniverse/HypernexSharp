@@ -42,6 +42,18 @@ namespace HypernexSharp.Socketing
                             string message = node["message"].Value;
                             switch (message.ToLower())
                             {
+                                case "sendauth":
+                                {
+                                    SendAuth sendAuth = new SendAuth(node["result"]);
+                                    _fromGameServerMessage.RegisterAuth(sendAuth);
+                                    break;
+                                }
+                                case "tempusertoken":
+                                {
+                                    TempUserToken tempUserToken = new TempUserToken(node["result"]);
+                                    OnSocketEvent.Invoke(tempUserToken);
+                                    break;
+                                }
                                 case "addedmoderator":
                                 {
                                     AddedModerator addedModerator = new AddedModerator(node["result"]);

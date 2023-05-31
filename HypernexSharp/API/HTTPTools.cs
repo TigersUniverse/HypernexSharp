@@ -59,7 +59,7 @@ namespace HypernexSharp.API
         internal static async Task<(string, Stream)> GETFileAndName(string url)
         {
             HttpResponseMessage response = await _client.GetAsync(url);
-            return (response.Content.Headers.ContentDisposition.Name, await response.Content.ReadAsStreamAsync());
+            return (response.Content.Headers.ContentDisposition.FileName.Replace("\"", ""), await response.Content.ReadAsStreamAsync());
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using HypernexSharp.SocketObjects;
+using SimpleJSON;
 
 namespace HypernexSharp.Socketing.SocketResponses
 {
@@ -10,7 +11,9 @@ namespace HypernexSharp.Socketing.SocketResponses
         public string gameServerId;
         public string instanceId;
         public string Uri;
+        public InstanceProtocol InstanceProtocol;
         public string worldId;
+        public string tempUserToken;
 
         public InstanceOpened(JSONNode result)
         {
@@ -19,6 +22,8 @@ namespace HypernexSharp.Socketing.SocketResponses
             instanceId = result["instanceId"].Value;
             Uri = result["Uri"].Value;
             worldId = result["worldId"].Value;
+            tempUserToken = result["tempUserToken"].Value;
+            InstanceProtocol = (InstanceProtocol) result["Uri"].AsInt;
         }
     }
 }
