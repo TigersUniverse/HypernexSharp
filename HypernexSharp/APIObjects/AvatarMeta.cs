@@ -36,7 +36,7 @@ namespace HypernexSharp.APIObjects
 
         public static AvatarMeta FromJSON(JSONNode node)
         {
-            AvatarMeta avatarMeta = new AvatarMeta(node["Id"].Value, node["OwenerId"].Value,
+            AvatarMeta avatarMeta = new AvatarMeta(node["Id"].Value, node["OwnerId"].Value,
                 (AvatarPublicity) node["Publicity"].AsInt, node["Name"].Value, node["Description"].Value,
                 node["ImageURL"].Value);
             foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Tags"].AsArray)

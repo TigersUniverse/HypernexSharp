@@ -1,7 +1,9 @@
-﻿namespace HypernexSharp.API.APIResults
+﻿using HypernexSharp.APIObjects;
+
+namespace HypernexSharp.API.APIResults
 {
     public class ManageAssetTokenResult
     {
-        public string token { get; set; }
+        public Token token { get; set; }
     }
 }

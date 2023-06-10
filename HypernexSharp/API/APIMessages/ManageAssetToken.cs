@@ -21,7 +21,7 @@ namespace HypernexSharp.API.APIMessages
             o.Add("action", (int) action);
             o.Add("assetId", assetId);
             if(!string.IsNullOrEmpty(removeAssetToken))
-                o.Add("removeAssetToken", removeAssetToken);
+                o.Add("assetToken", removeAssetToken);
             return o;
         }
 

@@ -632,7 +632,7 @@ namespace HypernexSharp
                 {
                     ManageAssetTokenResult manageAssetTokenResult = new ManageAssetTokenResult();
                     if (result.result["token"] != null)
-                        manageAssetTokenResult.token = result.result["token"].Value;
+                        manageAssetTokenResult.token = Token.FromJSON(result.result["token"]);
                     callback.Invoke(
                         new CallbackResult<ManageAssetTokenResult>(true, result.message, manageAssetTokenResult));
                 }
@@ -641,7 +641,7 @@ namespace HypernexSharp
             });
         }
         
-        public void RemoveAssetToken(Action<CallbackResult<ManageAssetTokenResult>> callback, User CurrentUser,
+        public void RemoveAssetToken(Action<CallbackResult<EmptyResult>> callback, User CurrentUser,
             Token token, string assetId, string removeAssetToken)
         {
             ManageAssetToken manageAssetToken =
@@ -650,14 +650,9 @@ namespace HypernexSharp
             manageAssetToken.SendRequest(Settings, result =>
             {
                 if (result.success)
-                {
-                    ManageAssetTokenResult manageAssetTokenResult = new ManageAssetTokenResult
-                        {token = removeAssetToken};
-                    callback.Invoke(
-                        new CallbackResult<ManageAssetTokenResult>(true, result.message, manageAssetTokenResult));
-                }
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
                 else
-                    callback.Invoke(new CallbackResult<ManageAssetTokenResult>(false, result.message, null));
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, new EmptyResult()));
             });
         }
 
