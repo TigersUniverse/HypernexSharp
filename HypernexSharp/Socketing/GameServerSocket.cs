@@ -103,7 +103,7 @@ namespace HypernexSharp.Socketing
                                     OnSocketEvent.Invoke(userLeft);
                                     break;
                                 }
-                                case "updateinstance":
+                                case "updatedinstance":
                                 {
                                     UpdatedInstance updatedInstance = new UpdatedInstance(node["result"]);
                                     OnSocketEvent.Invoke(updatedInstance);
