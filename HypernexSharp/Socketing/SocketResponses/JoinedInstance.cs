@@ -20,7 +20,7 @@ namespace HypernexSharp.Socketing.SocketResponses
         {
             Result = result;
             Uri = result["Uri"].Value;
-            InstanceProtocol = (InstanceProtocol) result["Uri"].AsInt;
+            InstanceProtocol = (InstanceProtocol) result["InstanceProtocol"].AsInt;
             gameServerId = result["gameServerId"].Value;
             instanceId = result["instanceId"].Value;
             tempUserToken = result["tempUserToken"].Value;

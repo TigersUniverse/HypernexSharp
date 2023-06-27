@@ -562,9 +562,10 @@ namespace HypernexSharp
             });
         }
 
-        public void Search(Action<CallbackResult<SearchResult>> callback, SearchType searchType, string searchTerm)
+        public void SearchByName(Action<CallbackResult<SearchResult>> callback, SearchType searchType,
+            string searchTerm, int results = 50, int page = 0)
         {
-            Search search = new Search(searchType, searchTerm);
+            Search search = new Search(searchType, searchTerm, results, page);
             search.GetRequest(Settings, result =>
             {
                 if (result.success)
@@ -574,6 +575,37 @@ namespace HypernexSharp
                 }
                 else
                     callback.Invoke(new CallbackResult<SearchResult>(false, result.message, null));
+            });
+        }
+
+        public void SearchByTag(Action<CallbackResult<SearchResult>> callback, SearchType searchType, string searchTerm,
+            int results = 50, int page = 0)
+        {
+            Search search = new Search(searchType, searchTerm, results, page, true);
+            search.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    SearchResult searchResult = new SearchResult(result.result["Candidates"].AsArray);
+                    callback.Invoke(new CallbackResult<SearchResult>(true, result.message, searchResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<SearchResult>(false, result.message, null));
+            });
+        }
+
+        public void GetFileMeta(Action<CallbackResult<FileMetaResult>> callback, string uploaderUserId, string fileId)
+        {
+            FileMeta fileMeta = new FileMeta(uploaderUserId, fileId);
+            fileMeta.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    FileMetaResult fileMetaResult = new FileMetaResult(result.result["FileMeta"]);
+                    callback.Invoke(new CallbackResult<FileMetaResult>(true, result.message, fileMetaResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<FileMetaResult>(false, result.message, null));
             });
         }
 
@@ -660,6 +692,21 @@ namespace HypernexSharp
         {
             SimpleUserIdToken instances = new SimpleUserIdToken("instances", CurrentUser.Id, token.content);
             instances.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    InstancesResult instancesResult = new InstancesResult(result.result);
+                    callback.Invoke(new CallbackResult<InstancesResult>(true, result.message, instancesResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<InstancesResult>(false, result.message, null));
+            });
+        }
+
+        public void GetPublicInstancesOfWorld(Action<CallbackResult<InstancesResult>> callback, string worldid)
+        {
+            GetPublicInstancesOfWorld getPublicInstancesOfWorld = new GetPublicInstancesOfWorld(worldid);
+            getPublicInstancesOfWorld.GetRequest(Settings, result =>
             {
                 if (result.success)
                 {

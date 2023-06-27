@@ -23,7 +23,7 @@ namespace HypernexSharp.Socketing.SocketResponses
             Uri = result["Uri"].Value;
             worldId = result["worldId"].Value;
             tempUserToken = result["tempUserToken"].Value;
-            InstanceProtocol = (InstanceProtocol) result["Uri"].AsInt;
+            InstanceProtocol = (InstanceProtocol) result["InstanceProtocol"].AsInt;
         }
     }
 }

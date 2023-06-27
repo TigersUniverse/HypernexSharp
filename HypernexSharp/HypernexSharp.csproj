@@ -88,8 +88,10 @@
         <Compile Include="API\APIMessages\ChangeEmail.cs" />
         <Compile Include="API\APIMessages\CreateUser.cs" />
         <Compile Include="API\APIMessages\DoesUserExist.cs" />
+        <Compile Include="API\APIMessages\FileMeta.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
+        <Compile Include="API\APIMessages\GetPublicInstancesOfWorld.cs" />
         <Compile Include="API\APIMessages\GetSocketInfo.cs" />
         <Compile Include="API\APIMessages\GetUser.cs" />
         <Compile Include="API\APIMessages\IsInviteCodeRequired.cs" />
@@ -109,6 +111,7 @@
         <Compile Include="API\APIResult.cs" />
         <Compile Include="API\APIResults\DoesUserExistResult.cs" />
         <Compile Include="API\APIResults\EmptyResult.cs" />
+        <Compile Include="API\APIResults\FileMetaResult.cs" />
         <Compile Include="API\APIResults\GetSocketInfoResult.cs" />
         <Compile Include="API\APIResults\GetUserResult.cs" />
         <Compile Include="API\APIResults\InstancesResult.cs" />

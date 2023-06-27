@@ -5,8 +5,10 @@
         private string endpoint = "search/";
         protected override string Endpoint => endpoint;
 
-        public Search(SearchType t, string searchTerms)
+        public Search(SearchType t, string searchTerms, int itemsPerPage = 50, int page = 0, bool isTag = false)
         {
+            if (isTag)
+                endpoint = "tag/";
             switch (t)
             {
                 case SearchType.User:
@@ -19,7 +21,9 @@
                     endpoint += "world/";
                     break;
             }
-            endpoint += searchTerms;
+            endpoint += searchTerms + "/";
+            endpoint += itemsPerPage + "/";
+            endpoint += page;
         }
     }
 
