@@ -19,6 +19,9 @@ namespace HypernexSharp.Socketing
             string c = settings.TargetDomain + ":" + socketInfo.Port;
             using (_socket = new WebSocket(socketInfo.IsWSS ? "wss://" + c : "ws://" + c))
             {
+                _socket.SslConfiguration.EnabledSslProtocols =
+                    (System.Security.Authentication.SslProtocols) (SslProtocols.Tls12 | SslProtocols.Tls11 |
+                                                                   SslProtocols.Tls);
                 _socket.OnOpen += (sender, args) => OnConnect.Invoke();
                 _socket.OnMessage += (sender, args) =>
                 {
@@ -41,5 +44,13 @@ namespace HypernexSharp.Socketing
         }
         public void SendMessage(JSONNode node) => _socket.Send(node.ToString());
         public void Close() => _socket.Close();
+        
+        [Flags]
+        private enum SslProtocols
+        {
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072
+        }
     }
 }
