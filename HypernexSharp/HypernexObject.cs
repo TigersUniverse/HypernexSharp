@@ -523,6 +523,45 @@ namespace HypernexSharp
             Upload(callback, upload);
         }
 
+        private void OnUploadPart(Action<CallbackResult<UploadResult>> callback, UploadPart uploadPart,
+            APIResult result)
+        {
+            if (!result.success)
+            {
+                callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
+                return;
+            }
+            if (uploadPart.CanUpload)
+            {
+                if (result.result["chunkId"] != null)
+                    uploadPart.ChunkId = result.result["chunkId"].Value;
+                uploadPart.SendForm(Settings, r => OnUploadPart(callback, uploadPart, r));
+                return;
+            }
+            UploadResult uploadResult = new UploadResult
+                {UploadData = FileData.FromJSON(result.result["UploadData"])};
+            if (result.result.HasKey("AvatarId"))
+                uploadResult.AvatarId = result.result["AvatarId"].Value;
+            if (result.result.HasKey("WorldId"))
+                uploadResult.WorldId = result.result["WorldId"].Value;
+            callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
+        }
+
+        public void UploadPart(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
+            FileStream stream, string temporaryDirectory, AvatarMeta avatarMeta = null, WorldMeta worldMeta = null)
+        {
+            UploadPart uploadPart;
+            if (avatarMeta != null)
+                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory, avatarMeta);
+            else if(worldMeta != null)
+                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory, worldMeta);
+            else
+                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory);
+            uploadPart.OriginalFileName = Path.GetFileName(stream.Name);
+            uploadPart.SplitStreams();
+            uploadPart.SendForm(Settings, result => OnUploadPart(callback, uploadPart, result));
+        }
+
         public void RemoveAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
             string avatarId)
         {
@@ -720,11 +759,11 @@ namespace HypernexSharp
 
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
 
-        public UserSocket OpenUserSocket(Action readyToOpen = null, bool openWhenReady = true)
+        public UserSocket OpenUserSocket(User user, Token token, Action readyToOpen = null, bool openWhenReady = true)
         {
             if (canOpenSocket())
             {
-                _userSocket = new UserSocket(this, () =>
+                _userSocket = new UserSocket(this, user, token, () =>
                 {
                     if (openWhenReady)
                         _userSocket.Open();

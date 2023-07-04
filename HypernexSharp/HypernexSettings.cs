@@ -15,6 +15,8 @@
         public bool IsHTTP { get; set; }
         public string APIVersion { get; set; } = "v1";
 
+        public bool AutoReconnectSocket { get; set; } = true;
+
         public string APIURL
         {
             get

@@ -106,6 +106,7 @@
         <Compile Include="API\APIMessages\SimpleUserIdToken.cs" />
         <Compile Include="API\APIMessages\UpdateBio.cs" />
         <Compile Include="API\APIMessages\Upload.cs" />
+        <Compile Include="API\APIMessages\UploadPart.cs" />
         <Compile Include="API\APIMessages\Verify2FA.cs" />
         <Compile Include="API\APIMessages\VerifyEmailToken.cs" />
         <Compile Include="API\APIResult.cs" />
@@ -122,6 +123,7 @@
         <Compile Include="API\APIResults\MetaCallback.cs" />
         <Compile Include="API\APIResults\SearchResult.cs" />
         <Compile Include="API\APIResults\SignupResult.cs" />
+        <Compile Include="API\APIResults\UploadChunkResult.cs" />
         <Compile Include="API\APIResults\UploadResult.cs" />
         <Compile Include="API\CallbackResult.cs" />
         <Compile Include="API\HTTPTools.cs" />

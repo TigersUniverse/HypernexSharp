@@ -20,11 +20,10 @@ namespace HypernexSharp.Socketing
         public Action<ISocketResponse> OnSocketEvent = response => { };
         public Action<bool> OnClose = hasError => { };
 
-        internal UserSocket(HypernexObject hypernexObject, Action onReady = null)
+        internal UserSocket(HypernexObject hypernexObject, User user, Token token, Action onReady = null)
         {
             _hypernexObject = hypernexObject;
-            _fromUserMessage =
-                new FromUserMessage(hypernexObject.Settings.UserId, _hypernexObject.Settings.TokenContent);
+            _fromUserMessage = new FromUserMessage(user.Id, token.content);
             _hypernexObject.GetSocketInfo(result =>
             {
                 if (result.success)

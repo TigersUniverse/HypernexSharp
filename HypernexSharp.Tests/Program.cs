@@ -1,5 +1,6 @@
 ﻿using System;
 using HypernexSharp.APIObjects;
+using HypernexSharp.Socketing;
 using LoginResult = HypernexSharp.APIObjects.LoginResult;
 
 namespace HypernexSharp.Tests
@@ -7,6 +8,7 @@ namespace HypernexSharp.Tests
     internal class Program
     {
         private const string DOMAIN = "localhost";
+        private const bool IS_HTTP = true;
         private static HypernexObject HypernexObject;
         private static User CurrentUser;
         private static Token CurrentToken;
@@ -31,7 +33,8 @@ namespace HypernexSharp.Tests
             string twofa = String.Empty;
             if (is2FA)
                 twofa = Console.ReadLine() ?? String.Empty;
-            HypernexSettings settings = new HypernexSettings(username, password, twofa){TargetDomain = DOMAIN, IsHTTP = true};
+            HypernexSettings settings = new HypernexSettings(username, password, twofa)
+                {TargetDomain = DOMAIN, IsHTTP = IS_HTTP};
             HypernexObject = new HypernexObject(settings);
             HypernexObject.Login(r =>
             {
@@ -45,6 +48,10 @@ namespace HypernexSharp.Tests
                         {
                             CurrentUser = userR.result.UserData;
                             Console.WriteLine("Got LoginUser! Welcome, " + CurrentUser.Username);
+                            UserSocket socket =
+                                HypernexObject.OpenUserSocket(CurrentUser, CurrentToken);
+                            socket.OnOpen += () => Console.WriteLine("Socket Opened!");
+                            socket.OnClose += b => Console.WriteLine("Socket Closed! DidError: " + b);
                         }
                         else
                             Console.Write("Failed to get Login User!");
