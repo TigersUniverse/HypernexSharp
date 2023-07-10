@@ -1,4 +1,5 @@
-﻿using HypernexSharp.SocketObjects;
+﻿using System.Collections.Generic;
+using HypernexSharp.SocketObjects;
 using SimpleJSON;
 
 namespace HypernexSharp.Socketing.SocketResponses
@@ -12,8 +13,11 @@ namespace HypernexSharp.Socketing.SocketResponses
         public string instanceId;
         public string Uri;
         public InstanceProtocol InstanceProtocol;
+        public InstancePublicity InstancePublicity;
         public string worldId;
         public string tempUserToken;
+        public List<string> Moderators = new List<string>();
+        public List<string> BannedUsers = new List<string>();
 
         public InstanceOpened(JSONNode result)
         {
@@ -24,6 +28,11 @@ namespace HypernexSharp.Socketing.SocketResponses
             worldId = result["worldId"].Value;
             tempUserToken = result["tempUserToken"].Value;
             InstanceProtocol = (InstanceProtocol) result["InstanceProtocol"].AsInt;
+            InstancePublicity = (InstancePublicity) result["InstancePublicity"].AsInt;
+            foreach (KeyValuePair<string,JSONNode> keyValuePair in result["Moderators"].AsArray)
+                Moderators.Add(keyValuePair.Value.Value);
+            foreach (KeyValuePair<string,JSONNode> keyValuePair in result["BannedUsers"].AsArray)
+                BannedUsers.Add(keyValuePair.Value.Value);
         }
     }
 }

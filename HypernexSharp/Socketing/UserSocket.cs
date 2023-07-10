@@ -92,6 +92,12 @@ namespace HypernexSharp.Socketing
                                     OnSocketEvent.Invoke(instanceOpened);
                                     break;
                                 }
+                                case "updatedinstance":
+                                {
+                                    UpdatedInstance updatedInstance = new UpdatedInstance(node["result"]);
+                                    OnSocketEvent.Invoke(updatedInstance);
+                                    break;
+                                }
                                 case "createdtemporaryinstance":
                                 case "failedtocreatetemporaryinstance":
                                     EmptyResult emptyResult = new EmptyResult(message);
