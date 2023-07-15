@@ -1,4 +1,5 @@
-﻿using SimpleJSON;
+﻿using System.Collections.Generic;
+using SimpleJSON;
 
 namespace HypernexSharp.Socketing.SocketMessages
 {
@@ -9,6 +10,7 @@ namespace HypernexSharp.Socketing.SocketMessages
         public string gameServerId;
         public string toInstanceId;
         public string targetUserId;
+        public string assetToken;
         
         public JSONObject GetArgs()
         {
@@ -16,6 +18,7 @@ namespace HypernexSharp.Socketing.SocketMessages
             o.Add("gameServerId", gameServerId);
             o.Add("toInstanceId", toInstanceId);
             o.Add("targetUserId", targetUserId);
+            o.Add("assetToken", assetToken);
             return o;
         }
     }

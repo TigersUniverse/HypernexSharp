@@ -147,13 +147,14 @@ namespace HypernexSharp.Socketing
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(leaveInstance).GetJSON());
         }
 
-        public void SendInvite(User targetUser, string gameServerId, string toInstanceId)
+        public void SendInvite(User targetUser, string gameServerId, string toInstanceId, string assetToken = "")
         {
             SendInvite sendInvite = new SendInvite
             {
                 targetUserId = targetUser.Id,
                 gameServerId = gameServerId,
-                toInstanceId = toInstanceId
+                toInstanceId = toInstanceId,
+                assetToken = assetToken
             };
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(sendInvite).GetJSON());
         }

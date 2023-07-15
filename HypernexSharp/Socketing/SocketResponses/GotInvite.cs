@@ -11,6 +11,7 @@ namespace HypernexSharp.Socketing.SocketResponses
         public string toGameServerId;
         public string toInstanceId;
         public string worldId;
+        public string assetToken;
 
         public GotInvite(JSONNode result)
         {
@@ -19,6 +20,7 @@ namespace HypernexSharp.Socketing.SocketResponses
             toGameServerId = result["toGameServerId"].Value;
             toInstanceId = result["toInstanceId"].Value;
             worldId = result["worldId"].Value;
+            assetToken = result["assetToken"].Value;
         }
     }
 }
