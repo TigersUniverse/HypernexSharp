@@ -10,6 +10,7 @@ namespace HypernexSharp.Socketing.SocketMessages
         public string worldId;
         public InstancePublicity instancePublicity;
         public InstanceProtocol instanceProtocol;
+        public string gameServerId;
         
         public JSONObject GetArgs()
         {
@@ -17,6 +18,8 @@ namespace HypernexSharp.Socketing.SocketMessages
             o.Add("worldId", worldId);
             o.Add("instancePublicity", (int) instancePublicity);
             o.Add("instanceProtocol", (int) instanceProtocol);
+            if(!string.IsNullOrEmpty(gameServerId))
+                o.Add("gameServerId", gameServerId);
             return o;
         }
     }

@@ -757,6 +757,19 @@ namespace HypernexSharp
             });
         }
 
+        public void GetGameServers(Action<CallbackResult<GameServersResult>> callback)
+        {
+            EmptyGet emptyGet = new EmptyGet("gameServers");
+            emptyGet.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<GameServersResult>(true, result.message,
+                        new GameServersResult(result.result)));
+                else
+                    callback.Invoke(new CallbackResult<GameServersResult>(false, result.message, null));
+            });
+        }
+
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
 
         public UserSocket OpenUserSocket(User user, Token token, Action readyToOpen = null, bool openWhenReady = true)

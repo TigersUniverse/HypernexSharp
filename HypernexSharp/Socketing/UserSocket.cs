@@ -170,7 +170,8 @@ namespace HypernexSharp.Socketing
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(shareAvatarToken).GetJSON());
         }
 
-        public void RequestNewInstance(WorldMeta worldMeta, InstancePublicity instancePublicity, InstanceProtocol instanceProtocol)
+        public void RequestNewInstance(WorldMeta worldMeta, InstancePublicity instancePublicity,
+            InstanceProtocol instanceProtocol, GameServer gameServer = null)
         {
             RequestNewInstance requestNewInstance = new RequestNewInstance
             {
@@ -178,6 +179,8 @@ namespace HypernexSharp.Socketing
                 instancePublicity = instancePublicity,
                 instanceProtocol = instanceProtocol
             };
+            if (gameServer != null)
+                requestNewInstance.gameServerId = gameServer.GameServerId;
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(requestNewInstance).GetJSON());
         }
 

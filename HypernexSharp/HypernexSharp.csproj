@@ -70,11 +70,13 @@
         <Compile Include="APIObjects\BuildPlatform.cs" />
         <Compile Include="APIObjects\Builds.cs" />
         <Compile Include="APIObjects\FileData.cs" />
+        <Compile Include="APIObjects\GameServer.cs" />
         <Compile Include="APIObjects\LoginResult.cs" />
         <Compile Include="APIObjects\ManageAssetTokenAction.cs" />
         <Compile Include="APIObjects\PronounCases.cs" />
         <Compile Include="APIObjects\Pronouns.cs" />
         <Compile Include="APIObjects\Rank.cs" />
+        <Compile Include="APIObjects\Region.cs" />
         <Compile Include="APIObjects\SafeInstance.cs" />
         <Compile Include="APIObjects\SetPronouns.cs" />
         <Compile Include="APIObjects\Status.cs" />
@@ -88,6 +90,7 @@
         <Compile Include="API\APIMessages\ChangeEmail.cs" />
         <Compile Include="API\APIMessages\CreateUser.cs" />
         <Compile Include="API\APIMessages\DoesUserExist.cs" />
+        <Compile Include="API\APIMessages\EmptyGet.cs" />
         <Compile Include="API\APIMessages\FileMeta.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
@@ -113,6 +116,7 @@
         <Compile Include="API\APIResults\DoesUserExistResult.cs" />
         <Compile Include="API\APIResults\EmptyResult.cs" />
         <Compile Include="API\APIResults\FileMetaResult.cs" />
+        <Compile Include="API\APIResults\GameServersResult.cs" />
         <Compile Include="API\APIResults\GetSocketInfoResult.cs" />
         <Compile Include="API\APIResults\GetUserResult.cs" />
         <Compile Include="API\APIResults\InstancesResult.cs" />
