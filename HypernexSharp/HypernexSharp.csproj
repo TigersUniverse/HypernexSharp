@@ -92,6 +92,7 @@
         <Compile Include="API\APIMessages\DoesUserExist.cs" />
         <Compile Include="API\APIMessages\EmptyGet.cs" />
         <Compile Include="API\APIMessages\FileMeta.cs" />
+        <Compile Include="API\APIMessages\GetBuild.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
         <Compile Include="API\APIMessages\GetPublicInstancesOfWorld.cs" />
@@ -113,12 +114,14 @@
         <Compile Include="API\APIMessages\Verify2FA.cs" />
         <Compile Include="API\APIMessages\VerifyEmailToken.cs" />
         <Compile Include="API\APIResult.cs" />
+        <Compile Include="API\APIResults\AuthForBuildsResult.cs" />
         <Compile Include="API\APIResults\DoesUserExistResult.cs" />
         <Compile Include="API\APIResults\EmptyResult.cs" />
         <Compile Include="API\APIResults\FileMetaResult.cs" />
         <Compile Include="API\APIResults\GameServersResult.cs" />
         <Compile Include="API\APIResults\GetSocketInfoResult.cs" />
         <Compile Include="API\APIResults\GetUserResult.cs" />
+        <Compile Include="API\APIResults\GetVersions.cs" />
         <Compile Include="API\APIResults\InstancesResult.cs" />
         <Compile Include="API\APIResults\InviteCodeRequiredResult.cs" />
         <Compile Include="API\APIResults\IsValidTokenResult.cs" />

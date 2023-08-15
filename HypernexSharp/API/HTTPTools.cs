@@ -58,5 +58,12 @@ namespace HypernexSharp.API
             HttpResponseMessage response = await _client.GetAsync(url);
             return (response.Content.Headers.ContentDisposition.FileName.Replace("\"", ""), await response.Content.ReadAsStreamAsync());
         }
+        
+        internal static async Task<Stream> POSTGetFile(string url, string data)
+        {
+            StringContent stringContent = new StringContent(data, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _client.PostAsync(url, stringContent);
+            return await response.Content.ReadAsStreamAsync();
+        }
     }
 }

@@ -7,8 +7,8 @@ namespace HypernexSharp.Tests
 {
     internal class Program
     {
-        private const string DOMAIN = "localhost";
-        private const bool IS_HTTP = true;
+        private const string DOMAIN = "play.hypernex.dev";
+        private const bool IS_HTTP = false;
         private static HypernexObject HypernexObject;
         private static User CurrentUser;
         private static Token CurrentToken;

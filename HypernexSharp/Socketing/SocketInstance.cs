@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Timers;
 using HypernexSharp.API.APIResults;
 using SimpleJSON;
 using WebSocketSharp;
@@ -17,6 +18,7 @@ namespace HypernexSharp.Socketing
         private HypernexSettings s;
         private GetSocketInfoResult g;
         private bool isClosing;
+        private Timer Timer;
 
         public SocketInstance(HypernexSettings settings, GetSocketInfoResult socketInfo)
         {
@@ -25,10 +27,25 @@ namespace HypernexSharp.Socketing
             CreateSocket(settings, socketInfo);
         }
 
+        private void StartTimer()
+        {
+            if(Timer != null)
+                Timer.Dispose();
+            Timer = new Timer(10000);
+            Timer.AutoReset = false;
+            Timer.Elapsed += (sender, args) =>
+            {
+                CreateSocket(s, g, true);
+                Timer.Stop();
+            };
+            Timer.Start();
+        }
+
         private void d(bool error)
         {
+            if(isClosing) return;
             OnDisconnect -= d;
-            CreateSocket(s, g, true);
+            StartTimer();
         }
 
         private void CreateSocket(HypernexSettings settings, GetSocketInfoResult socketInfo, bool open = false)
@@ -68,6 +85,8 @@ namespace HypernexSharp.Socketing
         {
             isClosing = true;
             _socket.Close();
+            if(Timer != null)
+                Timer.Dispose();
         }
         
         [Flags]

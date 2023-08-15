@@ -177,6 +177,19 @@ namespace HypernexSharp
             });
         }
 
+        public void AuthForBuilds(Action<CallbackResult<AuthForBuildsResult>> callback)
+        {
+            EmptyGet emptyGet = new EmptyGet("authForBuilds");
+            emptyGet.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<AuthForBuildsResult>(true, result.message,
+                        new AuthForBuildsResult(result.result)));
+                else
+                    callback.Invoke(new CallbackResult<AuthForBuildsResult>(false, result.message, null));
+            });
+        }
+
         public void DoesUserExist(Action<CallbackResult<DoesUserExistResult>> callback, string userid)
         {
             DoesUserExist doesUserExist = new DoesUserExist {userid = userid};
@@ -768,6 +781,27 @@ namespace HypernexSharp
                 else
                     callback.Invoke(new CallbackResult<GameServersResult>(false, result.message, null));
             });
+        }
+
+        public void GetVersions(Action<CallbackResult<GetVersions>> callback, string name)
+        {
+            EmptyGet emptyGet = new EmptyGet("getVersions/" + name);
+            emptyGet.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<GetVersions>(true, result.message,
+                        new GetVersions(result.result)));
+                else
+                    callback.Invoke(new CallbackResult<GetVersions>(false, result.message, null));
+            });
+        }
+
+        public void GetBuild(Action<Stream> callback, string name, string version, int artifact,
+            User CurrentUser = null, Token token = null)
+        {
+            GetBuild getBuild = new GetBuild(name, version, artifact, CurrentUser?.Id ?? String.Empty,
+                token?.content ?? String.Empty);
+            getBuild.PostGetAttachment(Settings, callback);
         }
 
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;

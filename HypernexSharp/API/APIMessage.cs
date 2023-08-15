@@ -66,6 +66,19 @@ namespace HypernexSharp.API
                 TaskScheduler.Default);
         }
 
+        internal void PostGetAttachment(HypernexSettings settings, Action<Stream> callback = null)
+        {
+            Task.Factory.StartNew(async () =>
+                {
+                    JSONNode n = GetNode();
+                    string d = n.ToString();
+                    Stream res = await HTTPTools.POSTGetFile(settings.APIURL + Endpoint, d);
+                    if(callback != null)
+                        callback.Invoke(res);
+                }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
+                TaskScheduler.Default);
+        }
+
         protected abstract string Endpoint { get; }
 
         protected virtual JSONNode GetNode(){ return new JSONObject(); }
