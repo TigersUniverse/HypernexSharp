@@ -73,6 +73,9 @@
         <Compile Include="APIObjects\GameServer.cs" />
         <Compile Include="APIObjects\LoginResult.cs" />
         <Compile Include="APIObjects\ManageAssetTokenAction.cs" />
+        <Compile Include="APIObjects\Popularity.cs" />
+        <Compile Include="APIObjects\PopularityObject.cs" />
+        <Compile Include="APIObjects\PopularityType.cs" />
         <Compile Include="APIObjects\PronounCases.cs" />
         <Compile Include="APIObjects\Pronouns.cs" />
         <Compile Include="APIObjects\Rank.cs" />
@@ -95,6 +98,7 @@
         <Compile Include="API\APIMessages\GetBuild.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
+        <Compile Include="API\APIMessages\GetPopularity.cs" />
         <Compile Include="API\APIMessages\GetPublicInstancesOfWorld.cs" />
         <Compile Include="API\APIMessages\GetSocketInfo.cs" />
         <Compile Include="API\APIMessages\GetUser.cs" />
@@ -128,6 +132,7 @@
         <Compile Include="API\APIResults\LoginResult.cs" />
         <Compile Include="API\APIResults\ManageAssetTokenResult.cs" />
         <Compile Include="API\APIResults\MetaCallback.cs" />
+        <Compile Include="API\APIResults\PopularityResult.cs" />
         <Compile Include="API\APIResults\SearchResult.cs" />
         <Compile Include="API\APIResults\SignupResult.cs" />
         <Compile Include="API\APIResults\UploadChunkResult.cs" />

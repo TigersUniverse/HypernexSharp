@@ -1,10 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using HypernexSharp.API;
 using HypernexSharp.API.APIMessages;
 using HypernexSharp.API.APIResults;
 using HypernexSharp.APIObjects;
 using HypernexSharp.Socketing;
+using SimpleJSON;
 using LoginResult = HypernexSharp.APIObjects.LoginResult;
 
 namespace HypernexSharp
@@ -802,6 +804,50 @@ namespace HypernexSharp
             GetBuild getBuild = new GetBuild(name, version, artifact, CurrentUser?.Id ?? String.Empty,
                 token?.content ?? String.Empty);
             getBuild.PostGetAttachment(Settings, callback);
+        }
+
+        public void GetWorldPopularity(Action<CallbackResult<PopularityResult>> callback, PopularityType popularityType,
+            int itemsPerPage = 50, int page = 0)
+        {
+            GetPopularity getPopularity = new GetPopularity(UploadType.World, popularityType, itemsPerPage, page);
+            getPopularity.GetRequest(Settings, result =>
+            {
+                if(result.success)
+                {
+                    List<Popularity> popularities = new List<Popularity>();
+                    JSONArray array = result.result["Popularity"].AsArray;
+                    for (int i = 0; i < array.Count; i++)
+                        popularities.Add(Popularity.FromJSON(array[i]));
+                    callback.Invoke(new CallbackResult<PopularityResult>(true, result.message, new PopularityResult
+                    {
+                        Popularity = popularities.ToArray()
+                    }));
+                }
+                else
+                    callback.Invoke(new CallbackResult<PopularityResult>(false, result.message, null));
+            });
+        }
+        
+        public void GetAvatarPopularity(Action<CallbackResult<PopularityResult>> callback, PopularityType popularityType,
+            int itemsPerPage = 50, int page = 0)
+        {
+            GetPopularity getPopularity = new GetPopularity(UploadType.Avatar, popularityType, itemsPerPage, page);
+            getPopularity.GetRequest(Settings, result =>
+            {
+                if(result.success)
+                {
+                    List<Popularity> popularities = new List<Popularity>();
+                    JSONArray array = result.result["Popularity"].AsArray;
+                    for (int i = 0; i < array.Count; i++)
+                        popularities.Add(Popularity.FromJSON(array[i]));
+                    callback.Invoke(new CallbackResult<PopularityResult>(true, result.message, new PopularityResult
+                    {
+                        Popularity = popularities.ToArray()
+                    }));
+                }
+                else
+                    callback.Invoke(new CallbackResult<PopularityResult>(false, result.message, null));
+            });
         }
 
         private bool canOpenSocket() => _userSocket == null && _gameServerSocket == null;
