@@ -26,7 +26,7 @@
     </PropertyGroup>
     <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
         <PlatformTarget>AnyCPU</PlatformTarget>
-        <DebugType>pdbonly</DebugType>
+        <DebugType>none</DebugType>
         <Optimize>true</Optimize>
         <OutputPath>bin\Release\</OutputPath>
         <DefineConstants>TRACE</DefineConstants>
@@ -159,6 +159,7 @@
         <Compile Include="Socketing\SocketMessages\LeaveInstance.cs" />
         <Compile Include="Socketing\SocketMessages\RemoveInstance.cs" />
         <Compile Include="Socketing\SocketMessages\RemoveModerator.cs" />
+        <Compile Include="Socketing\SocketMessages\RequestInvite.cs" />
         <Compile Include="Socketing\SocketMessages\RequestNewInstance.cs" />
         <Compile Include="Socketing\SocketMessages\SendInvite.cs" />
         <Compile Include="Socketing\SocketMessages\ShareAvatarToken.cs" />
@@ -170,6 +171,7 @@
         <Compile Include="Socketing\SocketResponses\FailedToLeaveInstance.cs" />
         <Compile Include="Socketing\SocketResponses\FailedToShareAvatarToken.cs" />
         <Compile Include="Socketing\SocketResponses\GotInvite.cs" />
+        <Compile Include="Socketing\SocketResponses\GotInviteRequest.cs" />
         <Compile Include="Socketing\SocketResponses\InstanceOpened.cs" />
         <Compile Include="Socketing\SocketResponses\JoinedInstance.cs" />
         <Compile Include="Socketing\SocketResponses\KickedUser.cs" />

@@ -17,6 +17,7 @@ namespace HypernexSharp.APIObjects
         public List<string> OutgoingFriendRequests { get; set; }
         public List<string> FriendRequests { get; set; }
         public List<string> Friends { get; set; }
+        public List<string> Badges { get; set; }
         public Bio Bio { get; set; }
         public Rank Rank { get; set; }
         public int AccountCreationDate { get; set; }
@@ -51,6 +52,12 @@ namespace HypernexSharp.APIObjects
             }
             if (node.HasKey("is2FAVerified"))
                 user.is2FAVerified = node["is2FAVerified"].AsBool;
+            if (node.HasKey("Badges"))
+            {
+                user.Badges = new List<string>();
+                foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Badges"].AsArray)
+                    user.Badges.Add(keyValuePair.Value.Value);
+            }
             if (node.HasKey("BlockedUsers"))
             {
                 user.BlockedUsers = new List<string>();

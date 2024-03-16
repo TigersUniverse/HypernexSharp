@@ -67,6 +67,12 @@ namespace HypernexSharp.Socketing
                                     OnSocketEvent.Invoke(failedToLeaveInstance);
                                     break;
                                 }
+                                case "gotinviterequest":
+                                {
+                                    GotInviteRequest gotInviteRequest = new GotInviteRequest(node["result"]);
+                                    OnSocketEvent.Invoke(gotInviteRequest);
+                                    break;
+                                }
                                 case "gotinvite":
                                 {
                                     GotInvite gotInvite = new GotInvite(node["result"]);
@@ -145,6 +151,15 @@ namespace HypernexSharp.Socketing
                 instanceId = instanceId
             };
             _socketInstance.SendMessage(_fromUserMessage.CreateMessage(leaveInstance).GetJSON());
+        }
+
+        public void RequestInvite(User targetUser)
+        {
+            RequestInvite requestInvite = new RequestInvite
+            {
+                targetUserId = targetUser.Id
+            };
+            _socketInstance.SendMessage(_fromUserMessage.CreateMessage(requestInvite).GetJSON());
         }
 
         public void SendInvite(User targetUser, string gameServerId, string toInstanceId, string assetToken = "")
