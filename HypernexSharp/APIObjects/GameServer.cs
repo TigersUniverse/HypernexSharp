@@ -13,7 +13,10 @@ namespace HypernexSharp.APIObjects
             {
                 GameServerId = node["GameServerId"].Value
             };
-            if (node["Region"] != null) gameServer.Region = Region.FromJSON(node["Region"]);
+            if (node["Region"] != null)
+                gameServer.Region = Region.FromJSON(node["Region"]);
+            else
+                gameServer.Region = new Region();
             return gameServer;
         }
     }

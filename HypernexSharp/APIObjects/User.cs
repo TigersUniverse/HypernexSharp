@@ -27,6 +27,7 @@ namespace HypernexSharp.APIObjects
         public int WarnCount { get; set; }
         public List<string> Avatars { get; set; }
         public List<string> Worlds { get; set; }
+        public bool isInWorld { get; set; }
 
         public static User FromJSON(JSONNode node)
         {
@@ -116,6 +117,8 @@ namespace HypernexSharp.APIObjects
                 foreach (KeyValuePair<string,JSONNode> keyValuePair in node["Worlds"].AsArray)
                     user.Worlds.Add(keyValuePair.Value.Value);
             }
+            if (node.HasKey("isInWorld"))
+                user.isInWorld = node["isInWorld"].AsBool;
             return user;
         }
     }
