@@ -498,7 +498,7 @@ namespace HypernexSharp
             });
         }
 
-        private void Upload(Action<CallbackResult<UploadResult>> callback, Upload upload)
+        private void Upload(Action<CallbackResult<UploadResult>> callback, Upload upload, Action<int> progress = null)
         {
             upload.SendForm(Settings, result =>
             {
@@ -514,32 +514,32 @@ namespace HypernexSharp
                 }
                 else
                     callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
-            });
+            }, progress);
         }
 
         public void UploadFile(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream)
+            FileStream stream, Action<int> progress = null)
         {
             Upload upload = new Upload(CurrentUser.Id, token.content, stream);
-            Upload(callback, upload);
+            Upload(callback, upload, progress);
         }
         
         public void UploadAvatar(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, AvatarMeta avatarMeta)
+            FileStream stream, AvatarMeta avatarMeta, Action<int> progress = null)
         {
             Upload upload = new Upload(CurrentUser.Id, token.content, stream, avatarMeta);
-            Upload(callback, upload);
+            Upload(callback, upload, progress);
         }
         
         public void UploadWorld(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, WorldMeta worldMeta)
+            FileStream stream, WorldMeta worldMeta, Action<int> progress = null)
         {
             Upload upload = new Upload(CurrentUser.Id, token.content, stream, worldMeta);
-            Upload(callback, upload);
+            Upload(callback, upload, progress);
         }
 
         private void OnUploadPart(Action<CallbackResult<UploadResult>> callback, UploadPart uploadPart,
-            APIResult result)
+            APIResult result, Action<int> progress = null)
         {
             if (!result.success)
             {
@@ -550,7 +550,7 @@ namespace HypernexSharp
             {
                 if (result.result["chunkId"] != null)
                     uploadPart.ChunkId = result.result["chunkId"].Value;
-                uploadPart.SendForm(Settings, r => OnUploadPart(callback, uploadPart, r));
+                uploadPart.SendForm(Settings, r => OnUploadPart(callback, uploadPart, r), progress);
                 return;
             }
             UploadResult uploadResult = new UploadResult
@@ -563,7 +563,8 @@ namespace HypernexSharp
         }
 
         public void UploadPart(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, string temporaryDirectory, AvatarMeta avatarMeta = null, WorldMeta worldMeta = null)
+            FileStream stream, string temporaryDirectory, AvatarMeta avatarMeta = null, WorldMeta worldMeta = null,
+            Action<int> progress = null)
         {
             UploadPart uploadPart;
             if (avatarMeta != null)
@@ -574,7 +575,7 @@ namespace HypernexSharp
                 uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory);
             uploadPart.OriginalFileName = Path.GetFileName(stream.Name);
             uploadPart.SplitStreams();
-            uploadPart.SendForm(Settings, result => OnUploadPart(callback, uploadPart, result));
+            uploadPart.SendForm(Settings, result => OnUploadPart(callback, uploadPart, result), progress);
         }
 
         public void RemoveAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
@@ -663,16 +664,16 @@ namespace HypernexSharp
             });
         }
 
-        public void GetFile(Action<Stream> callback, string uploaderUserId, string fileId)
+        public void GetFile(Action<Stream> callback, string uploaderUserId, string fileId, Action<int> progress = null)
         {
             GetFile getFile = new GetFile(uploaderUserId, fileId);
-            getFile.GetAttachment(Settings, callback);
+            getFile.GetAttachment(Settings, callback, progress);
         }
         
-        public void GetFile(Action<Stream> callback, string uploaderUserId, string fileId, string fileToken)
+        public void GetFile(Action<Stream> callback, string uploaderUserId, string fileId, string fileToken, Action<int> progress = null)
         {
             GetFile getFile = new GetFile(uploaderUserId, fileId, fileToken);
-            getFile.GetAttachment(Settings, callback);
+            getFile.GetAttachment(Settings, callback, progress);
         }
         
         public void GetAvatarMeta(Action<CallbackResult<MetaCallback<AvatarMeta>>> callback, string avatarId)

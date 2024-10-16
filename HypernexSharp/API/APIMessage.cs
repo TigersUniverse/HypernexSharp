@@ -9,25 +9,25 @@ namespace HypernexSharp.API
 {
     public abstract class APIMessage
     {
-        internal void SendRequest(HypernexSettings settings, Action<APIResult> callback = null)
+        internal void SendRequest(HypernexSettings settings, Action<APIResult> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
             {
                 JSONNode n = GetNode();
                 string d = n.ToString();
-                string res = await HTTPTools.POST(settings.APIURL + Endpoint, d);
+                string res = await HTTPTools.POST(settings.APIURL + Endpoint, d, progress);
                 if(callback != null)
                     callback.Invoke(new APIResult(res));
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
                 TaskScheduler.Default);
         }
 
-        internal void SendForm(HypernexSettings settings, Action<APIResult> callback = null)
+        internal void SendForm(HypernexSettings settings, Action<APIResult> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
                 {
                     (FileStream, Dictionary<string, string>) form = GetFileForm();
-                    string res = await HTTPTools.POSTFile(settings.APIURL + Endpoint, form.Item2, form.Item1);
+                    string res = await HTTPTools.POSTFile(settings.APIURL + Endpoint, form.Item2, form.Item1, progress);
                     if (callback != null)
                         callback.Invoke(new APIResult(res));
                 }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
@@ -44,35 +44,35 @@ namespace HypernexSharp.API
             });
         }
 
-        internal void GetAttachment(HypernexSettings settings, Action<Stream> callback = null)
+        internal void GetAttachment(HypernexSettings settings, Action<Stream> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
             {
-                Stream res = await HTTPTools.GETFile(settings.APIURL + Endpoint + GetQuery());
+                Stream res = await HTTPTools.GETFile(settings.APIURL + Endpoint + GetQuery(), progress);
                 if(callback != null)
                     callback.Invoke(res);
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
                 TaskScheduler.Default);
         }
         
-        internal void GetAttachment(HypernexSettings settings, Action<string, Stream> callback = null)
+        internal void GetAttachment(HypernexSettings settings, Action<string, Stream> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
             {
-                (string, Stream) res = await HTTPTools.GETFileAndName(settings.APIURL + Endpoint + GetQuery());
+                (string, Stream) res = await HTTPTools.GETFileAndName(settings.APIURL + Endpoint + GetQuery(), progress);
                 if(callback != null)
                     callback.Invoke(res.Item1, res.Item2);
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
                 TaskScheduler.Default);
         }
 
-        internal void PostGetAttachment(HypernexSettings settings, Action<Stream> callback = null)
+        internal void PostGetAttachment(HypernexSettings settings, Action<Stream> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
                 {
                     JSONNode n = GetNode();
                     string d = n.ToString();
-                    Stream res = await HTTPTools.POSTGetFile(settings.APIURL + Endpoint, d);
+                    Stream res = await HTTPTools.POSTGetFile(settings.APIURL + Endpoint, d, progress);
                     if(callback != null)
                         callback.Invoke(res);
                 }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
