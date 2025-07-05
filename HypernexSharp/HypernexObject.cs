@@ -192,6 +192,19 @@ namespace HypernexSharp
             });
         }
 
+        public void GetCDNs(Action<CallbackResult<GetCDNResult>> callback)
+        {
+            EmptyGet emptyGet = new EmptyGet("getCDNs");
+            emptyGet.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<GetCDNResult>(true, result.message,
+                        new GetCDNResult(result.result)));
+                else
+                    callback.Invoke(new CallbackResult<GetCDNResult>(false, result.message, null));
+            });
+        }
+
         public void DoesUserExist(Action<CallbackResult<DoesUserExistResult>> callback, string userid)
         {
             DoesUserExist doesUserExist = new DoesUserExist {userid = userid};
@@ -498,18 +511,16 @@ namespace HypernexSharp
             });
         }
 
-        private void Upload(Action<CallbackResult<UploadResult>> callback, Upload upload, Action<int> progress = null)
+        public void Upload(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
+            FileStream stream, CDNServer cdn, Action<int> progress = null)
         {
+            Upload upload = new Upload(CurrentUser.Id, token.content, stream, cdn.Server);
             upload.SendForm(Settings, result =>
             {
                 if (result.success)
                 {
                     UploadResult uploadResult = new UploadResult
                         {UploadData = FileData.FromJSON(result.result["UploadData"])};
-                    if (result.result.HasKey("AvatarId"))
-                        uploadResult.AvatarId = result.result["AvatarId"].Value;
-                    if (result.result.HasKey("WorldId"))
-                        uploadResult.WorldId = result.result["WorldId"].Value;
                     callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
                 }
                 else
@@ -517,65 +528,62 @@ namespace HypernexSharp
             }, progress);
         }
 
-        public void UploadFile(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, Action<int> progress = null)
+        public void UpdateAvatar(Action<CallbackResult<AvatarUpdateResult>> callback, User CurrentUser, Token token,
+            FileData uploadedFile, AvatarMeta avatarMeta)
         {
-            Upload upload = new Upload(CurrentUser.Id, token.content, stream);
-            Upload(callback, upload, progress);
+            UpdateAsset updateAsset = new UpdateAsset(CurrentUser.Id, token.content, uploadedFile.FileId, avatarMeta);
+            updateAsset.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    AvatarUpdateResult uploadResult = new AvatarUpdateResult(result.result);
+                    callback.Invoke(new CallbackResult<AvatarUpdateResult>(true, result.message, uploadResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<AvatarUpdateResult>(false, result.message, null));
+            });
         }
         
-        public void UploadAvatar(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, AvatarMeta avatarMeta, Action<int> progress = null)
+        public void UpdateAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
+            AvatarMeta avatarMeta)
         {
-            Upload upload = new Upload(CurrentUser.Id, token.content, stream, avatarMeta);
-            Upload(callback, upload, progress);
+            UpdateAsset updateAsset = new UpdateAsset(CurrentUser.Id, token.content, avatarMeta);
+            updateAsset.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
+                else
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, null));
+            });
         }
         
-        public void UploadWorld(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, WorldMeta worldMeta, Action<int> progress = null)
+        public void UpdateWorld(Action<CallbackResult<WorldUpdateResult>> callback, User CurrentUser, Token token,
+            FileData uploadedFile, WorldMeta worldMeta)
         {
-            Upload upload = new Upload(CurrentUser.Id, token.content, stream, worldMeta);
-            Upload(callback, upload, progress);
-        }
-
-        private void OnUploadPart(Action<CallbackResult<UploadResult>> callback, UploadPart uploadPart,
-            APIResult result, Action<int> progress = null)
-        {
-            if (!result.success)
+            UpdateAsset updateAsset = new UpdateAsset(CurrentUser.Id, token.content, uploadedFile.FileId, worldMeta);
+            updateAsset.SendRequest(Settings, result =>
             {
-                callback.Invoke(new CallbackResult<UploadResult>(false, result.message, null));
-                return;
-            }
-            if (uploadPart.CanUpload)
-            {
-                if (result.result["chunkId"] != null)
-                    uploadPart.ChunkId = result.result["chunkId"].Value;
-                uploadPart.SendForm(Settings, r => OnUploadPart(callback, uploadPart, r), progress);
-                return;
-            }
-            UploadResult uploadResult = new UploadResult
-                {UploadData = FileData.FromJSON(result.result["UploadData"])};
-            if (result.result.HasKey("AvatarId"))
-                uploadResult.AvatarId = result.result["AvatarId"].Value;
-            if (result.result.HasKey("WorldId"))
-                uploadResult.WorldId = result.result["WorldId"].Value;
-            callback.Invoke(new CallbackResult<UploadResult>(true, result.message, uploadResult));
+                if (result.success)
+                {
+                    WorldUpdateResult uploadResult = new WorldUpdateResult(result.result);
+                    callback.Invoke(new CallbackResult<WorldUpdateResult>(true, result.message, uploadResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<WorldUpdateResult>(false, result.message, null));
+            });
         }
-
-        public void UploadPart(Action<CallbackResult<UploadResult>> callback, User CurrentUser, Token token,
-            FileStream stream, string temporaryDirectory, AvatarMeta avatarMeta = null, WorldMeta worldMeta = null,
-            Action<int> progress = null)
+        
+        public void UpdateWorld(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
+            WorldMeta worldMeta)
         {
-            UploadPart uploadPart;
-            if (avatarMeta != null)
-                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory, avatarMeta);
-            else if(worldMeta != null)
-                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory, worldMeta);
-            else
-                uploadPart = new UploadPart(CurrentUser.Id, token.content, stream, temporaryDirectory);
-            uploadPart.OriginalFileName = Path.GetFileName(stream.Name);
-            uploadPart.SplitStreams();
-            uploadPart.SendForm(Settings, result => OnUploadPart(callback, uploadPart, result), progress);
+            UpdateAsset updateAsset = new UpdateAsset(CurrentUser.Id, token.content, worldMeta);
+            updateAsset.SendRequest(Settings, result =>
+            {
+                if (result.success)
+                    callback.Invoke(new CallbackResult<EmptyResult>(true, result.message, new EmptyResult()));
+                else
+                    callback.Invoke(new CallbackResult<EmptyResult>(false, result.message, null));
+            });
         }
 
         public void RemoveAvatar(Action<CallbackResult<EmptyResult>> callback, User CurrentUser, Token token,
@@ -743,9 +751,25 @@ namespace HypernexSharp
             });
         }
 
-        public void GetInstances(Action<CallbackResult<InstancesResult>> callback, User CurrentUser, Token token)
+        public void GetLiveInstances(Action<CallbackResult<InstancesResult>> callback, int itemsPerPage = 50,
+            int page = 0)
         {
-            SimpleUserIdToken instances = new SimpleUserIdToken("instances", CurrentUser.Id, token.content);
+            GetLiveInstances getLiveInstances = new GetLiveInstances(itemsPerPage, page);
+            getLiveInstances.GetRequest(Settings, result =>
+            {
+                if (result.success)
+                {
+                    InstancesResult instancesResult = new InstancesResult(result.result);
+                    callback.Invoke(new CallbackResult<InstancesResult>(true, result.message, instancesResult));
+                }
+                else
+                    callback.Invoke(new CallbackResult<InstancesResult>(false, result.message, null));
+            });
+        }
+
+        public void GetFriendInstances(Action<CallbackResult<InstancesResult>> callback, User CurrentUser, Token token)
+        {
+            SimpleUserIdToken instances = new SimpleUserIdToken("instances/friends", CurrentUser.Id, token.content);
             instances.SendRequest(Settings, result =>
             {
                 if (result.success)
@@ -808,9 +832,11 @@ namespace HypernexSharp
         }
 
         public void GetWorldPopularity(Action<CallbackResult<PopularityResult>> callback, PopularityType popularityType,
-            int itemsPerPage = 50, int page = 0)
+            string[] tags = default, int itemsPerPage = 50, int page = 0)
         {
-            GetPopularity getPopularity = new GetPopularity(UploadType.World, popularityType, itemsPerPage, page);
+            GetPopularity getPopularity = tags != null && tags.Length > 0
+                ? new GetPopularity(UploadType.World, popularityType, tags, itemsPerPage, page)
+                : new GetPopularity(UploadType.World, popularityType, itemsPerPage, page);
             getPopularity.GetRequest(Settings, result =>
             {
                 if(result.success)
@@ -830,9 +856,11 @@ namespace HypernexSharp
         }
         
         public void GetAvatarPopularity(Action<CallbackResult<PopularityResult>> callback, PopularityType popularityType,
-            int itemsPerPage = 50, int page = 0)
+            string[] tags = default, int itemsPerPage = 50, int page = 0)
         {
-            GetPopularity getPopularity = new GetPopularity(UploadType.Avatar, popularityType, itemsPerPage, page);
+            GetPopularity getPopularity = tags != null && tags.Length > 0
+                ? new GetPopularity(UploadType.Avatar, popularityType, tags, itemsPerPage, page)
+                : new GetPopularity(UploadType.Avatar, popularityType, itemsPerPage, page);
             getPopularity.GetRequest(Settings, result =>
             {
                 if(result.success)

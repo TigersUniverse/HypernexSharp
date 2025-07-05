@@ -14,5 +14,13 @@ namespace HypernexSharp.API.APIMessages
             string t = uploadType == UploadType.World ? "world" : "avatar";
             Endpoint = $"popularity/{t}/{(int)popularityType}/{itemsPerPage}/{page}";
         }
+        
+        public GetPopularity(UploadType uploadType, PopularityType popularityType, string[] tags, int itemsPerPage = 50, int page = 0)
+        {
+            if (uploadType == UploadType.Media)
+                throw new Exception("Cannot get popularity for Media");
+            string t = uploadType == UploadType.World ? "world" : "avatar";
+            Endpoint = $"popularity/{t}/{(int)popularityType}/{string.Join<string>(",", tags)}/{itemsPerPage}/{page}";
+        }
     }
 }

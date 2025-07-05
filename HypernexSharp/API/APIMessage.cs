@@ -9,13 +9,17 @@ namespace HypernexSharp.API
 {
     public abstract class APIMessage
     {
+        protected virtual string APIURL => String.Empty;
+
+        private string GetAPIURL(HypernexSettings settings) => !string.IsNullOrEmpty(APIURL) ? APIURL : settings.APIURL;
+
         internal void SendRequest(HypernexSettings settings, Action<APIResult> callback = null, Action<int> progress = null)
         {
             Task.Factory.StartNew(async () =>
             {
                 JSONNode n = GetNode();
                 string d = n.ToString();
-                string res = await HTTPTools.POST(settings.APIURL + Endpoint, d, progress);
+                string res = await HTTPTools.POST(GetAPIURL(settings) + Endpoint, d, progress);
                 if(callback != null)
                     callback.Invoke(new APIResult(res));
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
@@ -27,7 +31,7 @@ namespace HypernexSharp.API
             Task.Factory.StartNew(async () =>
                 {
                     (FileStream, Dictionary<string, string>) form = GetFileForm();
-                    string res = await HTTPTools.POSTFile(settings.APIURL + Endpoint, form.Item2, form.Item1, progress);
+                    string res = await HTTPTools.POSTFile(GetAPIURL(settings) + Endpoint, form.Item2, form.Item1, progress);
                     if (callback != null)
                         callback.Invoke(new APIResult(res));
                 }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
@@ -38,7 +42,7 @@ namespace HypernexSharp.API
         {
             Task.Factory.StartNew(async () =>
             {
-                string res = await HTTPTools.GET(settings.APIURL + Endpoint + GetQuery());
+                string res = await HTTPTools.GET(GetAPIURL(settings) + Endpoint + GetQuery());
                 if(callback != null)
                     callback.Invoke(new APIResult(res));
             });
@@ -48,7 +52,7 @@ namespace HypernexSharp.API
         {
             Task.Factory.StartNew(async () =>
             {
-                Stream res = await HTTPTools.GETFile(settings.APIURL + Endpoint + GetQuery(), progress);
+                Stream res = await HTTPTools.GETFile(GetAPIURL(settings) + Endpoint + GetQuery(), progress);
                 if(callback != null)
                     callback.Invoke(res);
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
@@ -59,7 +63,7 @@ namespace HypernexSharp.API
         {
             Task.Factory.StartNew(async () =>
             {
-                (string, Stream) res = await HTTPTools.GETFileAndName(settings.APIURL + Endpoint + GetQuery(), progress);
+                (string, Stream) res = await HTTPTools.GETFileAndName(GetAPIURL(settings) + Endpoint + GetQuery(), progress);
                 if(callback != null)
                     callback.Invoke(res.Item1, res.Item2);
             }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,
@@ -72,7 +76,7 @@ namespace HypernexSharp.API
                 {
                     JSONNode n = GetNode();
                     string d = n.ToString();
-                    Stream res = await HTTPTools.POSTGetFile(settings.APIURL + Endpoint, d, progress);
+                    Stream res = await HTTPTools.POSTGetFile(GetAPIURL(settings) + Endpoint, d, progress);
                     if(callback != null)
                         callback.Invoke(res);
                 }, CancellationToken.None, TaskCreationOptions.LongRunning | TaskCreationOptions.AttachedToParent,

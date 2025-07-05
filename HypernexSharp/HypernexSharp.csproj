@@ -69,8 +69,10 @@
         <Compile Include="APIObjects\Bio.cs" />
         <Compile Include="APIObjects\BuildPlatform.cs" />
         <Compile Include="APIObjects\Builds.cs" />
+        <Compile Include="APIObjects\CDNServer.cs" />
         <Compile Include="APIObjects\FileData.cs" />
         <Compile Include="APIObjects\GameServer.cs" />
+        <Compile Include="APIObjects\DistanceObject.cs" />
         <Compile Include="APIObjects\LoginResult.cs" />
         <Compile Include="APIObjects\ManageAssetTokenAction.cs" />
         <Compile Include="APIObjects\Popularity.cs" />
@@ -97,6 +99,7 @@
         <Compile Include="API\APIMessages\FileMeta.cs" />
         <Compile Include="API\APIMessages\GetBuild.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
+        <Compile Include="API\APIMessages\GetLiveInstances.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
         <Compile Include="API\APIMessages\GetPopularity.cs" />
         <Compile Include="API\APIMessages\GetPublicInstancesOfWorld.cs" />
@@ -112,9 +115,9 @@
         <Compile Include="API\APIMessages\Search.cs" />
         <Compile Include="API\APIMessages\SimpleTargetUserId.cs" />
         <Compile Include="API\APIMessages\SimpleUserIdToken.cs" />
+        <Compile Include="API\APIMessages\UpdateAsset.cs" />
         <Compile Include="API\APIMessages\UpdateBio.cs" />
         <Compile Include="API\APIMessages\Upload.cs" />
-        <Compile Include="API\APIMessages\UploadPart.cs" />
         <Compile Include="API\APIMessages\Verify2FA.cs" />
         <Compile Include="API\APIMessages\VerifyEmailToken.cs" />
         <Compile Include="API\APIResult.cs" />
@@ -123,6 +126,7 @@
         <Compile Include="API\APIResults\EmptyResult.cs" />
         <Compile Include="API\APIResults\FileMetaResult.cs" />
         <Compile Include="API\APIResults\GameServersResult.cs" />
+        <Compile Include="API\APIResults\GetCDNResult.cs" />
         <Compile Include="API\APIResults\GetSocketInfoResult.cs" />
         <Compile Include="API\APIResults\GetUserResult.cs" />
         <Compile Include="API\APIResults\GetVersions.cs" />
@@ -135,8 +139,10 @@
         <Compile Include="API\APIResults\PopularityResult.cs" />
         <Compile Include="API\APIResults\SearchResult.cs" />
         <Compile Include="API\APIResults\SignupResult.cs" />
+        <Compile Include="API\APIResults\AvatarUpdateResult.cs" />
         <Compile Include="API\APIResults\UploadChunkResult.cs" />
         <Compile Include="API\APIResults\UploadResult.cs" />
+        <Compile Include="API\APIResults\WorldUpdateResult.cs" />
         <Compile Include="API\CallbackResult.cs" />
         <Compile Include="API\HTTPTools.cs" />
         <Compile Include="HypernexObject.cs" />
