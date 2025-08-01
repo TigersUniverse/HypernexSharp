@@ -751,11 +751,11 @@ namespace HypernexSharp
             });
         }
 
-        public void GetLiveInstances(Action<CallbackResult<InstancesResult>> callback, int itemsPerPage = 50,
-            int page = 0)
+        public void GetPrivateWorldInstances(Action<CallbackResult<InstancesResult>> callback, string worldid, User CurrentUser, Token token)
         {
-            GetLiveInstances getLiveInstances = new GetLiveInstances(itemsPerPage, page);
-            getLiveInstances.GetRequest(Settings, result =>
+            GetPrivateWorldInstances getPrivateWorldInstances =
+                new GetPrivateWorldInstances(worldid, CurrentUser.Id, token.content);
+            getPrivateWorldInstances.SendRequest(Settings, result =>
             {
                 if (result.success)
                 {
@@ -767,25 +767,10 @@ namespace HypernexSharp
             });
         }
 
-        public void GetFriendInstances(Action<CallbackResult<InstancesResult>> callback, User CurrentUser, Token token)
+        public void GetPublicWorldInstances(Action<CallbackResult<InstancesResult>> callback, string worldid)
         {
-            SimpleUserIdToken instances = new SimpleUserIdToken("instances/friends", CurrentUser.Id, token.content);
-            instances.SendRequest(Settings, result =>
-            {
-                if (result.success)
-                {
-                    InstancesResult instancesResult = new InstancesResult(result.result);
-                    callback.Invoke(new CallbackResult<InstancesResult>(true, result.message, instancesResult));
-                }
-                else
-                    callback.Invoke(new CallbackResult<InstancesResult>(false, result.message, null));
-            });
-        }
-
-        public void GetPublicInstancesOfWorld(Action<CallbackResult<InstancesResult>> callback, string worldid)
-        {
-            GetPublicInstancesOfWorld getPublicInstancesOfWorld = new GetPublicInstancesOfWorld(worldid);
-            getPublicInstancesOfWorld.GetRequest(Settings, result =>
+            GetPublicWorldInstances getPublicWorldInstances = new GetPublicWorldInstances(worldid);
+            getPublicWorldInstances.GetRequest(Settings, result =>
             {
                 if (result.success)
                 {

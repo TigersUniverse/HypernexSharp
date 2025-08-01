@@ -99,10 +99,10 @@
         <Compile Include="API\APIMessages\FileMeta.cs" />
         <Compile Include="API\APIMessages\GetBuild.cs" />
         <Compile Include="API\APIMessages\GetFile.cs" />
-        <Compile Include="API\APIMessages\GetLiveInstances.cs" />
         <Compile Include="API\APIMessages\GetMeta.cs" />
         <Compile Include="API\APIMessages\GetPopularity.cs" />
-        <Compile Include="API\APIMessages\GetPublicInstancesOfWorld.cs" />
+        <Compile Include="API\APIMessages\GetPrivateWorldInstances.cs" />
+        <Compile Include="API\APIMessages\GetPublicWorldInstances.cs" />
         <Compile Include="API\APIMessages\GetSocketInfo.cs" />
         <Compile Include="API\APIMessages\GetUser.cs" />
         <Compile Include="API\APIMessages\IsInviteCodeRequired.cs" />
